@@ -1,5 +1,5 @@
 # EU AI Act PoC Ontology
-A Proof-of-Concept (PoC) Ontology for representing the main elements of the EU AI Act (Regulation (EU) (EU) 2024/1689).
+A Proof-of-Concept (PoC) Ontology for representing the main elements of the EU AI Act (Regulation (EU) 2024/1689).
 
 ## Table of Contents
 
