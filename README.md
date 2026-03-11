@@ -98,26 +98,29 @@ WHERE {
 
 ## AI-assisted Pipeline
 
+![Diagram of our 3-step experimental pipeline for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/)](/experimental-ai-pipeline-diagram.png)
+Diagram of our 3-step experimental pipeline for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/).
+
 We followed an experimental AI-assisted pipeline through the following Steps 1-3:
 
 1. **Scoping and informal CQs:** In Step 1, we defined an initial set of **subdomains and CQs** using automated and manual methods:
 
-- Generated subdomains from **GitHub READMEs** tagged with "EU AI Act" using **GPT-4.1**.
-- Generated candidate CQs from the **EU AI Act text** using a **LoRA/T5 model**, which we trained according to [1].
-- Extracted subdomains and CQs from **scenario-based stories** via GPT-4.1.
-- After manual refinement, candidates were fed to **OntoScope**, and the final set of **terms and associated CQs** was determined manually.
+- Generated subdomains from [**GitHub READMEs** tagged with "EU AI Act"](https://github.com/search?q=eu%20ai%20act&type=repositories) using **GPT-4.1**. This helped to identify the types of software projects where the ontology could be applied in practice (e.g., "AI Risk Classification", and "Complicance Checking").
+- Generated candidate CQs from the **EU AI Act text** using a **LoRA/T5 model**, which we trained according to [1]. This helped to identify legal terms and requirements that are legally grounded through the EU AI Act (e.g., "What is an authorised representative?", "What is the list of prohibited practices set out in the Article?").
+- Extracted subdomains from selected **scenario-based stories** from the [EU-AI-Act-Flagged training dataset](https://huggingface.co/datasets/suhas-km/EU-AI-Act-Flagged/tree/main) via GPT-4.1. This helped to identify additional terms and CQs that derive from application-domain-specific and context-rich subdomains (e.g., "What explains the system's purpose in a smart city?").
+- After manual refinement, candidates were fed to [OntoScope](https://github.com/King-s-Knowledge-Graph-Lab/OntoScope), and the final set of **terms and associated CQs** was determined manually.
 
 2. **Glossary and Formal CQs**: Step 1 output was formalised to create a glossary and executable CQs:
 
-- Generated **SPARQL queries and glossary definitions** for each term using GPT-4.1.
+- Generated **SPARQL queries and glossary definitions** for each term using GPT-4.1. This helped the fast transition from ideation to a setup for prototyping.
 - Decided on the integration of **existing ontologies** based on Step 1 discoveries and contributor expertise.
-- Refined SPARQL queries and definitions to ensure **syntactic correctness** and **semantic compliance** with the EU AI Act.
+- Refined SPARQL queries and definitions to ensure **syntactic correctness**, and **semantic compliance** with the EU AI Act.
 
 
 3. **Test-driven ontology population and validation**: Step 3 combined AI-assisted updates with manual curation:
 
-- A **PoC ReAct-based AI agent** iteratively:
-  - retrieves SPARQL queries and the current TBox,
+- A **PoC ReAct-based [2] AI agent** iteratively:
+  - retrieves SPARQL queries and the current TBox and ABox,
   - updates the TBox and ABox,
   - validates queries against the ontology, and
   - checks if results are consistent.
@@ -125,10 +128,11 @@ We followed an experimental AI-assisted pipeline through the following Steps 1-3
 - Agent performance was **limited**, producing only some high-level classes correctly. Better feedback and context engineering are needed to produce a more viable solution inspired by the **TDD-like processes of the SAMOD methodology**.
 - Significant **manual curation** in Protégé was required to handle complex axioms, cross-ontology dependencies, and ensure correctness.
 
-Throughout Steps 1–3, we used a mix of Claude Code (Anthropic's agentic coding tool), OpenAI's Codex (the ChatGPT‑integrated coding agent), and ChatGPT (general‑purpose LLMs such as GPT‑4.1) depending on the task at hand.
+Throughout Steps 1–3, we used a mix of Claude Code (Anthropic's agentic coding tool), OpenAI's Codex (the ChatGPT‑integrated coding agent), and ChatGPT (general‑purpose LLMs such as GPT‑4.1) depending on the task at hand. Scripts were implemented in TypeScript and Python, as an extension of OntoScope or separate projects.
 
 ## Limitations and Future Work
+With respect to the ontology: 
 
 ## References
-[1] Antia, M. J., & Keet, C. M. (October). Automating the generation of competency questions for ontologies with agocqs. In Iberoamerican Knowledge Graphs and Semantic Web Conference (pp. 213-227). Cham: Springer Nature Switzerland.
-[2]
+[1] Antia, M. J., & Keet, C. M. (2023). Automating the generation of competency questions for ontologies with agocqs. In Iberoamerican Knowledge Graphs and Semantic Web Conference.
+[2] Yao, S., Zhao, J., Yu, D., Shafran, I., Narasimhan, K. R., & Cao, Y. (2022) ReAct: Synergizing Reasoning and Acting in Language Models. In NeurIPS 2022 Foundation Models for Decision Making Workshop.
