@@ -5,7 +5,7 @@ A Proof-of-Concept (PoC) Ontology for representing the main elements of the EU A
 - [Ontology](#ontology)
   - [Scope of the Ontology](#scope-of-the-ontology)
   - [Key Modelling Decisions and Example SPARQL Queries](#key-modelling-decisions-and-example-sparql-queries)
-- [AI-assisted Pipeline](#ai-assisted-pipeline)
+- [AI-assisted Workflow](#ai-assisted-workflow)
   - [Step 1: Scoping and informal CQs](#step-1-scoping-and-informal-cqs)
   - [Step 2: Glossary and Formal CQs](#step-2-glossary-and-formal-cqs)
   - [Step 3: Test-driven ontology population and validation](#step-3-test-driven-ontology-population-and-validation)
@@ -61,7 +61,7 @@ The scope of the EU AI Act PoC Ontology is selected on the basis of
 > - additional EU AI Act rule types, such as transparency obligations depending on the system domain or operator type;
 > - further classifiers and relationships for operators, authorities, actions, AI systems, and components (e.g., risk-based or domain-based classifications).
 >
-> The scope of the CQs was defined during the initial scoping stage of the AI-assisted pipeline, which identified _compliance checking_ and _AI system classification_ as key focus areas. In this context, the ontology provides a baseline for the automation of manual compliance checkers (e.g., the [FutureOfLife compliance checker](https://artificialintelligenceact.eu/assessment/eu-ai-act-compliance-checker/)) against AI system profiles. It can also complement existing predictive AI approaches (cf. the [EU-AI-Act-Flagged dataset](https://huggingface.co/datasets/suhas-km/EU-AI-Act-Flagged)) with symbolic AI methods for compliance assessment.
+> The scope of the CQs was defined during the initial scoping stage of the AI-assisted workflow which identified _compliance checking_ and _AI system classification_ as key focus areas. In this context, the ontology provides a baseline for the automation of manual compliance checkers (e.g., the [FutureOfLife compliance checker](https://artificialintelligenceact.eu/assessment/eu-ai-act-compliance-checker/)) against AI system profiles. It can also complement existing predictive AI approaches (cf. the [EU-AI-Act-Flagged dataset](https://huggingface.co/datasets/suhas-km/EU-AI-Act-Flagged)) with symbolic AI methods for compliance assessment.
 
 ### Key Modelling Decisions and Example SPARQL Queries
 **Formalisation:** We chose **OWL**, the W3C standard for formal ontology modeling, because it provides the expressivity and reasoning support needed for this PoC ontology (class hierarchies, property restrictions, disjointness, equivalence). This allows us to capture the requirements for AI system classification and compliance rules without relying on heavier or complementary approaches (e.g., SWRL, or RDF★).
@@ -100,12 +100,12 @@ WHERE {
 
 
 
-## AI-assisted Pipeline
+## AI-assisted Workflow
 
-![Diagram of our 3-step experimental pipeline for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/)](/experimental-ai-pipeline-diagram.png)
-Diagram of our 3-step experimental pipeline for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/).
+![Diagram of our 3-step experimental workflow for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/)](/experimental-ai-pipeline-diagram.png)
+Diagram of our 3-step experimental workflow for ontology engineering. The diagram was generated with [PaperBanana](https://paperbanana.me/).
 
-We followed an experimental AI-assisted pipeline through the following Steps 1-3.
+We followed an experimental AI-assisted workflow through the following Steps 1-3.
 
 ### Step 1: Scoping and Informal CQs
 In Step 1, we defined an initial set of **subdomains and CQs** using automated and manual methods:
