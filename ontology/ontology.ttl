@@ -1,0 +1,660 @@
+@prefix : <http://example.org/ontologies/eu-ai-act/> .
+@prefix eli: <http://data.europa.eu/eli/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sysmo: <http://sysmo.org/schema/sysmo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix eurovoc: <http://publications.europa.eu/resource/authority/fd_300/> .
+@base <http://example.org/ontologies/eu-ai-act/> .
+
+<http://example.org/ontologies/eu-ai-act> rdf:type owl:Ontology ;
+                                           owl:imports eli: ,
+                                                       <http://sysmo.org/1.0/schema/sysmo> ,
+                                                       odrl: ;
+                                           dcterms:creator "Danai Vachtsevanou"@en ;
+                                           dcterms:description "A simple ontology for representing the main AI system categories, actors, prohibited practices, and obligations of the EU AI Act (Regulation (EU) 2024/1689)."@en ;
+                                           dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+                                           dcterms:title "EU AI Act Simple Ontology"@en ;
+                                           <http://purl.org/vocab/vann/preferredNamespacePrefix> "euai" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://data.europa.eu/eli/ontology#refers_to
+eli:refers_to rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/source
+dcterms:source rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/odrl/2/leftOperand
+odrl:leftOperand rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/ns/odrl/2/rightOperand
+odrl:rightOperand rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://example.org/ontologies/eu-ai-act/hasApplicationDomain
+:hasApplicationDomain rdf:type owl:ObjectProperty ;
+                      rdfs:domain :AISystem .
+
+
+###  http://example.org/ontologies/eu-ai-act/hasIntendedPurpose
+:hasIntendedPurpose rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Provider .
+
+
+###  http://example.org/ontologies/eu-ai-act/provides
+:provides rdf:type owl:ObjectProperty ;
+          rdfs:domain :Provider ;
+          rdfs:range :AISystem ,
+                     :GeneralPurposeAIModel .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.org/ontologies/eu-ai-act/AIActPolicy
+:AIActPolicy rdf:type owl:Class ;
+             rdfs:subClassOf [ owl:intersectionOf ( odrl:Set
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:assignee ;
+                                                      owl:someValuesFrom :Operator
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:assigner ;
+                                                      owl:someValuesFrom :Authority
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:target ;
+                                                      owl:someValuesFrom :AISystem
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:action ;
+                                                      owl:hasValue :placeOnMarket
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:action ;
+                                                      owl:hasValue :putIntoService
+                                                    ]
+                                                    [ rdf:type owl:Restriction ;
+                                                      owl:onProperty odrl:action ;
+                                                      owl:hasValue odrl:use
+                                                    ]
+                                                  ) ;
+                               rdf:type owl:Class
+                             ] .
+
+
+###  http://example.org/ontologies/eu-ai-act/AIModel
+:AIModel rdf:type owl:Class ;
+         rdfs:subClassOf sysmo:Component ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty sysmo:componentOf ;
+                           owl:someValuesFrom :AISystem
+                         ] .
+
+
+###  http://example.org/ontologies/eu-ai-act/AIOffice
+:AIOffice rdf:type owl:Class ;
+          rdfs:subClassOf :Authority .
+
+
+###  http://example.org/ontologies/eu-ai-act/AISystem
+:AISystem rdf:type owl:Class ;
+          rdfs:subClassOf sysmo:System ,
+                          odrl:Asset .
+
+
+###  http://example.org/ontologies/eu-ai-act/AuthorisedRepresentative
+:AuthorisedRepresentative rdf:type owl:Class ;
+                          rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/Authority
+:Authority rdf:type owl:Class ;
+           rdfs:subClassOf eli:Agent ;
+           rdfs:comment "The European AI Office and the national competent authorities, that are responsible for implementing, supervising and enforcing the AI Act."@en ;
+           rdfs:label "authority"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/ComformityAssessmentBody
+:ComformityAssessmentBody rdf:type owl:Class .
+
+
+###  http://example.org/ontologies/eu-ai-act/Deployer
+:Deployer rdf:type owl:Class ;
+          rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/Distributor
+:Distributor rdf:type owl:Class ;
+             rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/GeneralPurposeAIModel
+:GeneralPurposeAIModel rdf:type owl:Class ;
+                       rdfs:subClassOf :AIModel .
+
+
+###  http://example.org/ontologies/eu-ai-act/HighRiskAISystem
+:HighRiskAISystem rdf:type owl:Class ;
+                  owl:equivalentClass [ owl:intersectionOf ( :AISystem
+                                                             [ rdf:type owl:Class ;
+                                                               owl:unionOf ( [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty sysmo:componentOf ;
+                                                                               owl:someValuesFrom [ owl:intersectionOf ( sysmo:System
+                                                                                                                         [ rdf:type owl:Restriction ;
+                                                                                                                           owl:onProperty sysmo:hasSystemType ;
+                                                                                                                           owl:someValuesFrom :HighRiskSystemType
+                                                                                                                         ]
+                                                                                                                       ) ;
+                                                                                                    rdf:type owl:Class
+                                                                                                  ]
+                                                                             ]
+                                                                             [ rdf:type owl:Restriction ;
+                                                                               owl:onProperty sysmo:hasSystemType ;
+                                                                               owl:someValuesFrom :HighRiskSystemType
+                                                                             ]
+                                                                           )
+                                                             ]
+                                                           ) ;
+                                        rdf:type owl:Class
+                                      ] ;
+                  rdfs:label "high-risk AI system"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/HighRiskSystemType
+:HighRiskSystemType rdf:type owl:Class ;
+                    rdfs:subClassOf sysmo:SystemType ;
+                    rdfs:label "high-risk AI system type"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/Importer
+:Importer rdf:type owl:Class ;
+          rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/MarketSurveillanceAuthority
+:MarketSurveillanceAuthority rdf:type owl:Class ;
+                             rdfs:subClassOf :NationalCompetentAuthority .
+
+
+###  http://example.org/ontologies/eu-ai-act/MediumRiskAISystem
+:MediumRiskAISystem rdf:type owl:Class ;
+                    rdfs:subClassOf :AISystem ;
+                    rdfs:label "medium-risk AI system"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/MediumRiskAISystemType
+:MediumRiskAISystemType rdf:type owl:Class ;
+                        rdfs:subClassOf sysmo:SystemType ;
+                        rdfs:label "medium-risk AI system type"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/NationalCompetentAuthority
+:NationalCompetentAuthority rdf:type owl:Class ;
+                            rdfs:subClassOf :Authority .
+
+
+###  http://example.org/ontologies/eu-ai-act/NotifyingAuthority
+:NotifyingAuthority rdf:type owl:Class ;
+                    rdfs:subClassOf :NationalCompetentAuthority .
+
+
+###  http://example.org/ontologies/eu-ai-act/Operator
+:Operator rdf:type owl:Class ;
+          rdfs:subClassOf eli:Agent .
+
+
+###  http://example.org/ontologies/eu-ai-act/Practice
+:Practice rdf:type owl:Class .
+
+
+###  http://example.org/ontologies/eu-ai-act/ProductManufacturer
+:ProductManufacturer rdf:type owl:Class ;
+                     rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/Provider
+:Provider rdf:type owl:Class ;
+          rdfs:subClassOf :Operator .
+
+
+###  http://example.org/ontologies/eu-ai-act/SafetyComponent
+:SafetyComponent rdf:type owl:Class ;
+                 rdfs:subClassOf sysmo:Component .
+
+
+###  http://www.w3.org/ns/odrl/2/PredicateConstraint
+odrl:PredicateConstraint rdf:type owl:Class .
+
+
+###  http://www.w3.org/ns/odrl/2/predicateConstraint
+odrl:predicateConstraint rdf:type owl:Class ;
+                         rdfs:subClassOf odrl:Constraint ;
+                         rdfs:comment "A PredicateConstraint class is used for expressions which compare two operands by one relational operator, where the leftOperand is a predicate and the rightOperand is an object. If the comparison returns a match the PredicateConstraint is satisfied, otherwise it is not satisfied."@en ;
+                         rdfs:label "predicate constraint"@en ;
+                         rdfs:seeAlso <https://ai.wu.ac.at/policies/orcp/odrl_regulatory_profile.jsonid> .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/ontologies/eu-ai-act/AIActPolicy
+:AIActPolicy rdf:type owl:NamedIndividual ;
+             eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> .
+
+
+###  http://example.org/ontologies/eu-ai-act/GeneralPurposeAIModel
+:GeneralPurposeAIModel rdf:type owl:NamedIndividual ;
+                       eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> .
+
+
+###  http://example.org/ontologies/eu-ai-act/NarrowProceduralTask
+:NarrowProceduralTask rdf:type owl:NamedIndividual ;
+                      rdfs:comment "A task  of such narrow and limited nature that it poses only limited risks which are not increased through the use of an AI system, such as the transformation of unstructured data into structured data, the classification of incoming documents into categories or the detection of duplicates among a large number of applications."@en ;
+                      rdfs:label "narrow procedural task"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/SafetyComponent
+:SafetyComponent rdf:type owl:NamedIndividual ;
+                 eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> .
+
+
+###  http://example.org/ontologies/eu-ai-act/assessComformity
+:assessComformity rdf:type owl:NamedIndividual ,
+                           odrl:Action ;
+                  eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ;
+                  rdfs:comment "The action of performing conformity assessment activities, including testing, certification and inspection, to demonstrate whether the requirements set out in a legal resource have been fulfilled, for example the requirements applicable to high-risk AI systems established in Regulation (EU) 2024/1689."@en ;
+                  rdfs:label "assess comformity"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/automotive
+:automotive rdf:type owl:NamedIndividual ,
+                     :HighRiskSystemType ;
+            rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/004651> .
+
+
+###  http://example.org/ontologies/eu-ai-act/aviation
+:aviation rdf:type owl:NamedIndividual ,
+                   :HighRiskSystemType ;
+          rdfs:seeAlso eurovoc:c_c8c80a5b ,
+                       <http://publications.europa.eu/resource/authority/fd_300/004408> .
+
+
+###  http://example.org/ontologies/eu-ai-act/biometricCategorisation
+:biometricCategorisation rdf:type owl:NamedIndividual ,
+                                  <http://www.w3.org/2004/02/skos/core#Concept> ;
+                         eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                         rdfs:comment "The individual categorisation of natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation."@en ;
+                         rdfs:label "biometric categorisation"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/biometricCategorisationProhibition
+:biometricCategorisationProhibition rdf:type owl:NamedIndividual ,
+                                             odrl:Prohibition ;
+                                    eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                    rdfs:comment "The prohibition of the placing on the market, the putting into service for this specific purpose, or the use of biometric categorisation systems that categorise individually natural persons based on their biometric data to deduce or infer their race, political opinions, trade union membership, religious or philosophical beliefs, sex life or sexual orientation; this prohibition does not cover any labelling or filtering of lawfully acquired biometric datasets, such as images, based on biometric data or categorizing of biometric data in the area of law enforcement."@en ;
+                                    rdfs:label "biometric categorisation prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/cablewayInstallations
+:cablewayInstallations rdf:type owl:NamedIndividual ,
+                                :HighRiskSystemType ;
+                       rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/004033> ,
+                                    <http://publications.europa.eu/resource/authority/fd_300/004527> .
+
+
+###  http://example.org/ontologies/eu-ai-act/emotionRecognition
+:emotionRecognition rdf:type owl:NamedIndividual ,
+                             <http://www.w3.org/2004/02/skos/core#Concept> ;
+                    eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ,
+                                  <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                    rdfs:comment "The identification or inference of emotions or intentions of natural persons on the basis of their biometric data."@en ;
+                    rdfs:label "emotion recognition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/emotionRecognitionProhibition
+:emotionRecognitionProhibition rdf:type owl:NamedIndividual ,
+                                        odrl:Prohibition ;
+                               eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                               rdfs:comment "The prohibition of the placing on the market, the putting into service for this specific purpose, or the use of AI systems to infer emotions of a natural person in the areas of workplace and education institutions, except where the use of the AI system is intended to be put in place or into the market for medical or safety reasons."@en ;
+                               rdfs:label "emotion recognition prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/exampleAISystem
+:exampleAISystem rdf:type owl:NamedIndividual ,
+                          :AISystem ;
+                 sysmo:hasSystemType :radioEquipment .
+
+
+###  http://example.org/ontologies/eu-ai-act/explosiveAtmosphereEquipment
+:explosiveAtmosphereEquipment rdf:type owl:NamedIndividual ,
+                                       :HighRiskSystemType ;
+                              rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/000945> .
+
+
+###  http://example.org/ontologies/eu-ai-act/facialRecognitionDatabaseExpansion
+:facialRecognitionDatabaseExpansion rdf:type owl:NamedIndividual ,
+                                             <http://www.w3.org/2004/02/skos/core#Concept> ;
+                                    eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                    rdfs:comment "The creation or expansion of facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage."@en ;
+                                    rdfs:label "facial recognition database expansion"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/facialRecognitionDatabaseExpansionProhibition
+:facialRecognitionDatabaseExpansionProhibition rdf:type owl:NamedIndividual ,
+                                                        odrl:Prohibition ;
+                                               eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                               rdfs:comment "The prohibition of the placing on the market, the putting into service for this specific purpose, or the use of AI systems that create or expand facial recognition databases through the untargeted scraping of facial images from the internet or CCTV footage."@en ;
+                                               rdfs:label "facial recognition database expansion prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/gasAppliance
+:gasAppliance rdf:type owl:NamedIndividual ,
+                       :HighRiskSystemType ;
+              rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/005440> .
+
+
+###  http://example.org/ontologies/eu-ai-act/hasIntendedPurpose
+:hasIntendedPurpose rdf:type owl:NamedIndividual ;
+                    eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> .
+
+
+###  http://example.org/ontologies/eu-ai-act/inVitroDiagnosticDevice
+:inVitroDiagnosticDevice rdf:type owl:NamedIndividual ,
+                                  :HighRiskSystemType ;
+                         rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/003844> ,
+                                      <http://publications.europa.eu/resource/authority/fd_300/005305> .
+
+
+###  http://example.org/ontologies/eu-ai-act/lawEnforcement
+:lawEnforcement rdf:type owl:NamedIndividual ,
+                         <http://www.w3.org/2004/02/skos/core#Concept> ;
+                eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_2> ,
+                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                rdfs:comment "The prevention, investigation, detection or prosecution of criminal offences or the execution of criminal penalties, including safeguarding against and preventing threats to public security, carried out by law enforcement authorities or on their behalf."@en ;
+                rdfs:label "law enforcement"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/lift
+:lift rdf:type owl:NamedIndividual ,
+               :HighRiskSystemType ;
+      rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/005447> .
+
+
+###  http://example.org/ontologies/eu-ai-act/machinery
+:machinery rdf:type owl:NamedIndividual ,
+                    :HighRiskSystemType ;
+           rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/001718> .
+
+
+###  http://example.org/ontologies/eu-ai-act/makeAvailableOnMarket
+:makeAvailableOnMarket rdf:type owl:NamedIndividual ,
+                                odrl:Action ;
+                       eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ;
+                       rdfs:comment "The action of supplying an AI system or a general-purpose AI model for distribution or use on the Union market in the course of a commercial activity, whether in return for payment or free of charge."@en ;
+                       rdfs:label "make available on market"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/manipulationAndDeception
+:manipulationAndDeception rdf:type owl:NamedIndividual ,
+                                   <http://www.w3.org/2004/02/skos/core#Concept> ;
+                          eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                          rdfs:comment "The deployment of subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques, with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision, thereby causing them to take a decision that they would not have otherwise taken in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm."@en ;
+                          rdfs:label "manipulation and deception"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/manipulationAndDeceptionProhibition
+:manipulationAndDeceptionProhibition rdf:type owl:NamedIndividual ,
+                                              odrl:Prohibition ;
+                                     eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                     odrl:constraint _:genid28 ;
+                                     rdfs:comment "The prohibition of the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques, with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision, thereby causing them to take a decision that they would not have otherwise taken in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm."@en ;
+                                     rdfs:label "manipulation and deception prohibition"@en .
+
+_:genid28 rdf:type odrl:PredicateConstraint ;
+           odrl:operator odrl:eq ;
+           odrl:leftOperand :hasIntendedPurpose ;
+           odrl:rightOperandReference :manipulationAndDeception .
+
+
+###  http://example.org/ontologies/eu-ai-act/medicalDevice
+:medicalDevice rdf:type owl:NamedIndividual ,
+                        :HighRiskSystemType ;
+               rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/003844> .
+
+
+###  http://example.org/ontologies/eu-ai-act/placeOnMarket
+:placeOnMarket rdf:type owl:NamedIndividual ,
+                        odrl:Action ;
+               eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ;
+               rdfs:comment "The action of first making available an AI system or a general-purpose AI model on the Union market."@en ;
+               rdfs:label "place on market"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/predictivePolicing
+:predictivePolicing rdf:type owl:NamedIndividual ;
+                    eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                    rdfs:comment "The making of risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence, based solely on the profiling of a natural person or on assessing their personality traits and characteristics."@en ;
+                    rdfs:label "predictive policing"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/predictivePolicingProhibition
+:predictivePolicingProhibition rdf:type owl:NamedIndividual ,
+                                        odrl:Prohibition ;
+                               eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                               rdfs:comment "The prohibition of the placing on the market, the putting into service for this specific purpose, or the use of an AI system for making risk assessments of natural persons in order to assess or predict the risk of a natural person committing a criminal offence, based solely on the profiling of a natural person or on assessing their personality traits and characteristics; this prohibition shall not apply to AI systems used to support the human assessment of the involvement of a person in a criminal activity, which is already based on objective and verifiable facts directly linked to a criminal activity."@en ;
+                               rdfs:label "predictive policing prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/pressureEquipment
+:pressureEquipment rdf:type owl:NamedIndividual ,
+                            :HighRiskSystemType ;
+                   rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/005614> .
+
+
+###  http://example.org/ontologies/eu-ai-act/prohibitedPracticesPolicy
+:prohibitedPracticesPolicy rdf:type owl:NamedIndividual ,
+                                    :AIActPolicy ;
+                           eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                           odrl:prohibition :biometricCategorisationProhibition ,
+                                            :emotionRecognitionProhibition ,
+                                            :facialRecognitionDatabaseExpansionProhibition ,
+                                            :manipulationAndDeceptionProhibition ,
+                                            :predictivePolicingProhibition ,
+                                            :realTimeRemoteBiometricIdentificationProhibition ,
+                                            :socialScoringProhibition ,
+                                            :vulnerabilityExploitationProhibition ;
+                           rdfs:comment "A policy that defines a set of prohibition rules about practices that are legally forbidden under the Regulation EU 2024/1689."@en ;
+                           rdfs:label "prohibited practices policy"@en ;
+                           odrl:profile <http://example.com/odrl:profile:regulatory-compliance> .
+
+
+###  http://example.org/ontologies/eu-ai-act/protectiveEquipment
+:protectiveEquipment rdf:type owl:NamedIndividual ,
+                              :HighRiskSystemType ;
+                     rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/005612> .
+
+
+###  http://example.org/ontologies/eu-ai-act/putIntoService
+:putIntoService rdf:type owl:NamedIndividual ,
+                         odrl:Action ;
+                eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ;
+                rdfs:comment "The action of supplying an AI system for first use directly to the deployer or for own use in the Union for its intended purpose."@en ;
+                rdfs:label "put into service"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/radioEquipment
+:radioEquipment rdf:type owl:NamedIndividual ,
+                         :HighRiskSystemType ;
+                rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/002176> .
+
+
+###  http://example.org/ontologies/eu-ai-act/realTimeRemoteBiometricIdentification
+:realTimeRemoteBiometricIdentification rdf:type owl:NamedIndividual ,
+                                                <http://www.w3.org/2004/02/skos/core#Concept> ;
+                                       eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_2> ,
+                                                     <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                       rdfs:comment "The automated recognition of physical, physiological, behavioural, or psychological human features for the purpose of establishing the identity of a natural person by comparing biometric data of that individual to biometric data of individuals stored in a database, where both of the following conditions are fulfilled: (i) the identification of natural persons occurs without their active involvement, typically at a distance through the comparison of a person’s biometric data with the biometric data contained in a reference database; (ii) the capturing of biometric data, the comparison and the identification all occur without a significant delay, comprising not only instant identification, but also limited short delays in order to avoid circumvention."@en ;
+                                       rdfs:label "real-time remote biometric identification"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/realTimeRemoteBiometricIdentificationProhibition
+:realTimeRemoteBiometricIdentificationProhibition rdf:type owl:NamedIndividual ,
+                                                           odrl:Prohibition ;
+                                                  eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                                  rdfs:comment "The prohibition of the use of ‘real-time’ remote biometric identification systems in publicly accessible spaces for the purposes of law enforcement, unless and in so far as such use is strictly necessary for one of the following objectives: (i) the targeted search for specific victims of abduction, trafficking in human beings or sexual exploitation of human beings, as well as the search for missing persons; (ii) the prevention of a specific, substantial and imminent threat to the life or physical safety of natural persons or a genuine and present or genuine and foreseeable threat of a terrorist attack; (iii) the localisation or identification of a person suspected of having committed a criminal offence, for the purpose of conducting a criminal investigation or prosecution or executing a criminal penalty for offences referred to in Annex II and punishable in the Member State concerned by a custodial sentence or a detention order for a maximum period of at least four years."@en ;
+                                                  rdfs:label "real-time remote biometric identification prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/recreationalCraftEquipment
+:recreationalCraftEquipment rdf:type owl:NamedIndividual ,
+                                     :HighRiskSystemType ;
+                            rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/002320> ,
+                                         <http://publications.europa.eu/resource/authority/fd_300/003338> .
+
+
+###  http://example.org/ontologies/eu-ai-act/socialScoring
+:socialScoring rdf:type owl:NamedIndividual ,
+                        <http://www.w3.org/2004/02/skos/core#Concept> ;
+               eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+               rdfs:comment "The evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics, with the social score leading to either or both of the following: (i) detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected; (ii) detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity."@en ;
+               rdfs:label "social scoring"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/socialScoringProhibition
+:socialScoringProhibition rdf:type owl:NamedIndividual ,
+                                   odrl:Prohibition ;
+                          eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                          rdfs:comment "The prohibition of the placing on the market, the putting into service or the use of AI systems for the evaluation or classification of natural persons or groups of persons over a certain period of time based on their social behaviour or known, inferred or predicted personal or personality characteristics, with the social score leading to either or both of the following: (i) detrimental or unfavourable treatment of certain natural persons or groups of persons in social contexts that are unrelated to the contexts in which the data was originally generated or collected; (ii) detrimental or unfavourable treatment of certain natural persons or groups of persons that is unjustified or disproportionate to their social behaviour or its gravity."@en ;
+                          rdfs:label "social scoring prohibition"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/toy
+:toy rdf:type owl:NamedIndividual ,
+              :HighRiskSystemType ;
+     rdfs:seeAlso <http://publications.europa.eu/resource/authority/fd_300/001391> .
+
+
+###  http://example.org/ontologies/eu-ai-act/vulnerabilityExploitation
+:vulnerabilityExploitation rdf:type owl:NamedIndividual ,
+                                    <http://www.w3.org/2004/02/skos/core#Concept> ;
+                           eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                           rdfs:comment "The exploitation of any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation, with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group in a manner that causes or is reasonably likely to cause that person or another person significant harm."@en ;
+                           rdfs:label "vulnerability exploitation"@en .
+
+
+###  http://example.org/ontologies/eu-ai-act/vulnerabilityExploitationProhibition
+:vulnerabilityExploitationProhibition rdf:type owl:NamedIndividual ,
+                                               odrl:Prohibition ;
+                                      eli:refers_to <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ;
+                                      rdfs:comment "The prohibition of the placing on the market, the putting into service or the use of an AI system that exploits any of the vulnerabilities of a natural person or a specific group of persons due to their age, disability or a specific social or economic situation, with the objective, or the effect, of materially distorting the behaviour of that person or a person belonging to that group in a manner that causes or is reasonably likely to cause that person or another person significant harm."@en ;
+                                      rdfs:label "vulnerability exploitation prohibition"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj> rdf:type owl:NamedIndividual ,
+                                                          eli:LegalResource ;
+                                                 eli:has_part <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_I> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_II> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_III> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_2> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> ,
+                                                              <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_6> ;
+                                                 rdfs:comment "The Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                 rdfs:label "EU AI Act"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_I
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_I> rdf:type owl:NamedIndividual ,
+                                                                eli:LegalResourceSubdivision ;
+                                                       eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                       rdfs:comment "Annex I of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                       rdfs:label "annex I"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_II
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_II> rdf:type owl:NamedIndividual ,
+                                                                 eli:LegalResourceSubdivision ;
+                                                        eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                        rdfs:comment "Annex II of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                        rdfs:label "annex II"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_III
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#anx_III> rdf:type owl:NamedIndividual ,
+                                                                  eli:LegalResourceSubdivision ;
+                                                         eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                         rdfs:comment "Annex III of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                         rdfs:label "annex III"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_2
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_2> rdf:type owl:NamedIndividual ,
+                                                                eli:LegalResourceSubdivision ;
+                                                       eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                       rdfs:comment "Article 2 of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                       rdfs:label "article 2"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_3> rdf:type owl:NamedIndividual ,
+                                                                eli:LegalResourceSubdivision ;
+                                                       eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                       rdfs:comment "Article 3 of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                       rdfs:label "article 3"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_5> rdf:type owl:NamedIndividual ,
+                                                                eli:LegalResourceSubdivision ;
+                                                       eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                       rdfs:comment "Article 5 of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                       rdfs:label "article 5"@en .
+
+
+###  https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_6
+<https://eur-lex.europa.eu/eli/reg/2024/1689/oj#art_6> rdf:type owl:NamedIndividual ,
+                                                                eli:LegalResourceSubdivision ;
+                                                       eli:is_part_of <https://eur-lex.europa.eu/eli/reg/2024/1689/oj> ;
+                                                       rdfs:comment "Article 6 of the Regulation (EU) 2024/1689 (EU AI Act)."@en ;
+                                                       rdfs:label "article 6"@en .
+
+
+#################################################################
+#    Annotations
+#################################################################
+
+:AIActPolicy rdfs:comment "A policy that defines a set of rules under the Regulation EU 2024/1689."@en ;
+             rdfs:label "AI Act policy"@en .
+
+
+:GeneralPurposeAIModel rdfs:comment "An AI model, including where such an AI model is trained with a large amount of data using self-supervision at scale, that displays significant generality and is capable of competently performing a wide range of distinct tasks regardless of the way the model is placed on the market and that can be integrated into a variety of downstream systems or applications, except AI models that are used for research, development or prototyping activities before they are placed on the market."@en ;
+                       rdfs:label "general-purpose AI model"@en .
+
+
+:SafetyComponent rdfs:comment "A component of a product or of an AI system which fulfils a safety function for that product or AI system, or the failure or malfunctioning of which endangers the health and safety of persons or property."@en ;
+                 rdfs:label "safety component"@en .
+
+
+:hasIntendedPurpose rdfs:comment "The relation between a provider of an AI system and the use for which the system is intended by the provider, as specified in the information supplied by the provider in the instructions for use, promotional or sales materials and statements, as well as in the technical documentation."@en ;
+                    rdfs:label "has intended purpose"@en .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
