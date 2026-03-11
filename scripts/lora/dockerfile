@@ -1,0 +1,38 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+# Install your NLP libs
+RUN pip install "numpy==1.26.4"
+
+RUN pip install "spacy==3.5.0" nltk
+
+RUN pip install --no-cache-dir \
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.5.0/en_core_web_sm-3.5.0-py3-none-any.whl
+
+RUN python -c "import nltk; nltk.download('stopwords', download_dir='/usr/local/share/nltk_data')"
+
+RUN pip install --no-cache-dir "setuptools<65" \
+ && pip install --no-cache-dir coreferee \
+ && python -m coreferee install en
+
+RUN python - <<EOF
+import pkg_resources
+print("pkg_resources OK")
+EOF
+
+COPY server.py .
+COPY inputs ./inputs
+COPY outputs ./outputs
+COPY model ./model
+COPY CLaROv2.csv .
+
+EXPOSE 8888
+
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8888"]
