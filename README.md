@@ -68,12 +68,12 @@ The scope of the EU AI Act PoC Ontology is selected on the basis of
 
 **Scoping, Conceptualisation, and Granularity level**: The ontology focused on _compliance checking_ and _AI system classification_, (e.g., informed by GitHub repositories, datasets discovered via [Google Dataset Search](https://datasetsearch.research.google.com/), and automatic CQ generation over the [EU AI Act text](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202401689); see X ). This produced a high-level set of terms as a starting point (e.g., _AI System_, _High-Risk AI System_, _Provider_, _General-Purpose AI Model_), refined using [OntoScope](https://github.com/King-s-Knowledge-Graph-Lab/OntoScope) to audit domain boundaries based on lateral and vertical thinking, and grounded where possible through reuse of existing ontologies such as [ELI](https://op.europa.eu/en/web/eu-vocabularies/dataset/-/resource?uri=http://publications.europa.eu/resource/dataset/eli), [ODRL](https://www.w3.org/TR/odrl-model/), [Sysmo](http://sysmo.org/), and [Eurovoc](https://eur-lex.europa.eu/browse/eurovoc.html) to support semantic interoperability and sufficient semantic coverage for a PoC ontology. We maintained a pragmatic, extensible granularity, while providing targeted high-detail examples to illustrate design choices. The latter includes application-domain individuals (e.g., _toy_, _radio equipment_) and specific prohibitions, such as restricting the placing on the market, putting into service, or use of AI systems that employ subliminal or manipulative techniques beyond a person's awareness. 
 
-**Definitions and Article References**: Term names, definitions and labels (_rdfs:comment_, _rdfs:label_) were directly derived from the [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). In addition, each term was associated to the EU AI Act article or annex that it references (_eli:refers_to_) using the ELI ontology. ELI defines a common data model for exchanging legislation metadata on the Web, and the EU AI Act and its legal resource subdivisions (articles, annexes, etc.) are already identified through ELI-compliant URIs. Therefore, all references in our ontology were implemented following the [ELI technical implementation guide](https://op.europa.eu/documents/2050822/2138819/ELI+-+A+Technical+Implementation+Guide.pdf/), ensuring consistency and traceability with other legal resources and expressions (_eli:LegalResource_, _eli:LegalResourceSubdivision_, _eli:expression_.
+**Definitions and Article References with ELI**: Term names, definitions and labels (_rdfs:comment_, _rdfs:label_) were directly derived from the [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). In addition, each term was associated to the EU AI Act article or annex that it references (_eli:refers_to_) using the ELI ontology. ELI defines a common data model for exchanging legislation metadata on the Web, and the EU AI Act and its legal resource subdivisions (articles, annexes, etc.) are already identified through ELI-compliant URIs. Therefore, all references in our ontology were implemented following the [ELI technical implementation guide](https://op.europa.eu/documents/2050822/2138819/ELI+-+A+Technical+Implementation+Guide.pdf/), ensuring consistency and traceability with other legal resources and expressions (_eli:LegalResource_, _eli:LegalResourceSubdivision_, _eli:expression_).
 
 <details>
 <summary>Example CQ</summary>
 
-**CQ:**  Which legal resource subdivisions (articles, annexes, etc.) are referenced by the definition of a `:SafetyComponent`, and what are their types, descriptions, and parent legal resources?
+**CQ:**  Which legal resource subdivisions (articles, annexes, etc.) are referenced by the definition of a safety component, and what are their types, descriptions, and parent legal resources?
 
 **SPARQL Query:**
 ```sparql
@@ -98,7 +98,74 @@ WHERE {
 
 </details>
 
+**EU AI Act Rules with ODRL**: 
+Rules of EU AI Act policy (`_:AIActPolicy rdfs:subClassOf odrl:Set`) were defined using the [ODRL vocabulary](https://www.w3.org/TR/odrl-vocab/), as it provides a **W3C standard model for expressing permissions, prohibitions, and duties**, which naturally correspond to the normative rules defined in the EU AI Act. This vocabulary was used in combination with the [ODRL Regulatory Compliance Profile](https://ai.wu.ac.at/policies/orcp/regulatory-model.html), which enables the definition of predicate constraints (`odrl:predicateConstraint`) within rules. This offers a more direct bridge to the properties defined in our PoC ontology, without requiring extensions to the `odrl:leftOperand` class. As a result, the PoC ontology models prohibited AI practices (_odrl:Prohibition_), and provides extension points to similarly represent regulatory duties (_odrl:Duty_) (e.g., to capture obligations imposed on operators under the EU AI Act).
 
+<details>
+<summary>Example CQ</summary>
+
+**CQ:**  Which legal resource subdivisions (articles, annexes, etc.) are referenced by the definition of a safety component, and what are their types, descriptions, and parent legal resources?
+
+**SPARQL Query:**
+```sparql
+PREFIX : <http://example.org/ontologies/eu-ai-act/>
+PREFIX odrl: <http://www.w3.org/ns/odrl/2/>
+PREFIX eli: <http://data.europa.eu/eli/ontology#>
+PREFIX euaiact: <https://eur-lex.europa.eu/eli/reg/2024/1689/oj#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+
+SELECT ?policy ?prohibition ?comment ?action ?legalResource
+WHERE {
+
+  ?policy odrl:prohibition ?prohibition .
+  
+  ?prohibition rdfs:comment ?comment .
+  ?prohibition odrl:constraint ?constraint .
+  ?constraint odrl:leftOperand :hasIntendedPurpose .
+  ?constraint odrl:rightOperandReference :manipulationAndDeception .
+
+  ?policy rdf:type/rdfs:subClassOf/
+      owl:intersectionOf/rdf:rest*/rdf:first
+      [ owl:onProperty odrl:action ; owl:hasValue ?action ] .
+
+ ?prohibition eli:refers_to ?legalResource . 
+}
+```
+
+| ?policy | ?prohibition                          | ?comment                                                 | ?action  | ?legalResource | 
+|---------------------------|--------------------------------|----------------------------------------------------------|---------------------|------|
+| :prohibitedPracticesPolicy             | :manipulationAndDeceptionProhibition  | "The prohibition of the placing on the market, the putting into service or the use of an AI system that deploys subliminal techniques beyond a person’s consciousness or purposefully manipulative or deceptive techniques, with the objective, or the effect of materially distorting the behaviour of a person or a group of persons by appreciably impairing their ability to make an informed decision, thereby causing them to take a decision that they would not have otherwise taken in a manner that causes or is reasonably likely to cause that person, another person or group of persons significant harm." | :placeOnMarket, :putIntoService, odrl:Use | euaiact:art_5           |
+
+</details>
+
+**AI System and AI Component Classification**: 
+Entities related to systems, components, and their types (e.g., _:AISystem_, _:AIModel_, _:SafetyComponent_, _:HighRiskSystemType_, _:toy_) were defined using the [SysMO ontology](http://sysmo.org/), which provides relevant high-level classes and properties (e.g., _sysmo:System_, _sysmo:Component_, _sysmo:componentOf_, _sysmo:hasSystemType_) and a formal foundation for system engineering ontologies. In addition, to define application-domain–specific AI system types (which are necessary for AI system classification and compliance checking) in a more systematic way, each application-domain type is associated with the [EUROVOC descriptor](https://eur-lex.europa.eu/browse/eurovoc.html) used to annotate EU regulations where such domains are relevant to AI system classification or compliance requirements. This allows the ontology to align domain-specific system types with the controlled vocabulary used in EU legislative metadata.
+
+
+<details>
+<summary>Example CQ</summary>
+
+
+**CQ:**  Whay is the risk type of a given AI system?
+
+**ABox**
+```rdf
+@prefix ex: <http://example.org/data/> .
+@prefix : <http://example.org/ontologies/eu-ai-act/> .
+@prefix sysmo: <http://sysmo.org/schema/sysmo/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:provider :isProviderOf ex:AISystem ;
+             :hasIntendedPurpose :narrowProceduralTask .
+
+ex:AISystem sysmo:hasSystemType :emotionRecognition .
+```
+
+Given the asserted system type (_:emotionRecognition_) and intended purpose (_:narrowProceduralTask_), an OWL reasoner infers that the system falls under _:MediumRiskAISystemType_.
+
+</details>
 
 ## AI-assisted Workflow
 
@@ -137,7 +204,7 @@ Step 3 combined AI-assisted updates with manual curation:
 Throughout Steps 1–3, we used a mix of Claude Code (Anthropic's agentic coding tool), OpenAI's Codex (the ChatGPT‑integrated coding agent), and ChatGPT (general‑purpose LLMs such as GPT‑4.1) depending on the task at hand. Scripts were implemented in TypeScript and Python, as an extension of OntoScope or separate projects.
 
 ## Limitations and Future Work
-With respect to the ontology: 
+The ontology currently does not cover all aspects of defined rules, such as exceptions, remedies, or conditional obligations, which motivates future work to extend it to include these rule types, including transparency obligations and other compliance-relevant requirements. In addition, the current AI-assisted workflow remains experimental and relies on manual curation, prompting future work to enhance its elements with more advanced perception mechanisms and context engineering that go beyond the current RAG-based components.. Finally, this initial study avoided highly overlapping resources like [AIRO](https://delaramglp.github.io/airo/) and [AIUP](https://delaramglp.github.io/aiup/) to reduce bias and allow for experimental flexibility; future work should re-examine these ontologies to explore more targeted and comprehensive modeling of AI system compliance and regulatory reasoning.
 
 ## References
 [1] Antia, M. J., & Keet, C. M. (2023). Automating the generation of competency questions for ontologies with agocqs. In Iberoamerican Knowledge Graphs and Semantic Web Conference.
