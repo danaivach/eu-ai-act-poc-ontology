@@ -208,4 +208,5 @@ The ontology currently does not cover all aspects of defined rules, such as exce
 
 ## References
 [1] Antia, M. J., & Keet, C. M. (2023). Automating the generation of competency questions for ontologies with agocqs. In Iberoamerican Knowledge Graphs and Semantic Web Conference.
+
 [2] Yao, S., Zhao, J., Yu, D., Shafran, I., Narasimhan, K. R., & Cao, Y. (2022) ReAct: Synergizing Reasoning and Acting in Language Models. In NeurIPS 2022 Foundation Models for Decision Making Workshop.
