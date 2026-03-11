@@ -1,0 +1,4543 @@
+# baseURI: http://sysmo.org/1.0/schema/sysmo
+# imports: http://www.linkedmodel.org/schema/dtype
+# imports: http://www.linkedmodel.org/schema/vaem
+
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dtype: <http://www.linkedmodel.org/schema/dtype#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sysml: <http://sysmo.org/schema/sysml/> .
+@prefix sysmo: <http://sysmo.org/schema/sysmo/> .
+@prefix vaem: <http://www.linkedmodel.org/schema/vaem#> .
+@prefix voag: <http://voag.linkedmodel.org/schema/voag#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+dc:author
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "author"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:contributor
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "contributor"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:creator
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "creator"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:date
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "date"^^xsd:datetime ;
+  rdfs:range xsd:dateTime ;
+.
+dc:description
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "description"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:rights
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "rights"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:subject
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "subject"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+dc:title
+  rdf:type owl:AnnotationProperty ;
+  rdfs:label "title"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+<http://sysmo.org/1.0/schema/sysmo>
+  rdf:type owl:Ontology ;
+  dc:creator "Ralph Hodgson"^^xsd:string ;
+  dc:description "The SysMO ontology defines classes, individuals and properties, under the \"sysmo\" namespace, that are relevant to systems. The SysMO ontology is intended to be used to (a) represent SysML resources; (b) serve as a foundation for other system engineering ontologies; (c) provide a basis for linking to ISO-15926 and CIM models.  Release 1.0 of SysMO represents constructs from version 1.2 of SysML."^^xsd:string ;
+  dc:subject "Systems"^^xsd:string ;
+  dc:title "SysMO Release 1 Ontology"^^xsd:string ;
+  vaem:dateCreated "2008-06-15"^^xsd:date ;
+  vaem:hasGraphRole vaem:MappingGraph ;
+  vaem:hasLicenseType voag:CC-SHAREALIKE_3PT0-US ;
+  vaem:lastUpdated "2014-06-21"^^xsd:date ;
+  vaem:namespace "http://sysmo.org/schema/sysmo/"^^xsd:anyURI ;
+  vaem:namespacePrefix "sysmo"^^xsd:string ;
+  vaem:owner "Ralph Hodgson, TopQuadrant"^^xsd:string ;
+  vaem:usesNonImportedResource dc:author ;
+  vaem:usesNonImportedResource dc:contributor ;
+  vaem:usesNonImportedResource dc:creator ;
+  vaem:usesNonImportedResource dc:date ;
+  vaem:usesNonImportedResource dc:description ;
+  vaem:usesNonImportedResource dc:rights ;
+  vaem:usesNonImportedResource dc:subject ;
+  vaem:usesNonImportedResource dc:title ;
+  vaem:usesNonImportedResource voag:CC-SHAREALIKE_3PT0-US ;
+  vaem:usesNonImportedResource voag:TopQuadrantAttribution ;
+  vaem:usesNonImportedResource prov:wasInfluencedBy ;
+  vaem:withAttributionTo voag:TopQuadrantAttribution ;
+  rdfs:label "SysMO Ontology"^^xsd:string ;
+  owl:imports <http://www.linkedmodel.org/schema/dtype> ;
+  owl:imports <http://www.linkedmodel.org/schema/vaem> ;
+  owl:versionInfo "Created with TopBraid Composer"^^xsd:string ;
+.
+sysml:AnalysisVerificationKind
+  rdf:type sysml:VerificationKind ;
+  dc:description "Analysis indicates that verification will be performed by technical evaluation using mathematical representations, charts, graphs, circuit diagrams, data reduction, or representative data. Analysis also includes the verification of requirements under conditions, which are simulated or modeled; where the results are derived from the analysis of the results produced by the model."^^xsd:string ;
+  dtype:value "analysis"^^xsd:string ;
+  rdfs:label "Analysis verification kind"^^xsd:string ;
+.
+sysml:AtomicFlowPort
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Port\"."^^xsd:string ;
+  rdfs:label "Atomic Flow Port"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowPort ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:int ;
+      owl:onProperty sysmo:hasFlowSpecification ;
+    ] ;
+  owl:disjointWith sysml:NonAtomicFlowPort ;
+.
+sysml:Block
+  rdf:type owl:Class ;
+  dc:description "A Block is a modular unit that describes some aspect of a system or element. It may include both structural and behavioral features, such as properties and operations, that represent the state of the system and behavior that the system may exhibit. Some of these properties may hold parts of a system, which can also be described by blocks. A block may include a structure of connectors between its properties to indicate how its parts or other properties relate to one another. Blocks provide a general-purpose capability to describe the architecture of a system. They provide the ability to represent a system hierarchy, in which a system at one level is composed of systems at a more basic level. They can describe not only the connectivity relationships between the systems at any level, but also quantitative values or other information about a system." ;
+  rdfs:label "Block"^^xsd:string ;
+  rdfs:subClassOf sysml:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "If true, then the block is treated as a black box; a part typed by this black box can only be connected via its ports or directly to its outer boundary. If false, then connections can be established to elements of its internal structure via deep-nested connector ends." ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysml:isEncapsulated ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Block ;
+      owl:onProperty sysml:hasBlock ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Block ;
+      owl:onProperty sysml:isBlockOf ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowPort ;
+      owl:onProperty sysmo:hasFlowPort ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowProperty ;
+      owl:onProperty sysmo:hasFlowProperty ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:InteractionPort ;
+      owl:onProperty sysmo:hasInteractionPort ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Port ;
+      owl:onProperty sysmo:hasPort ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Connector ;
+      owl:onProperty sysmo:hasConnector ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:includes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:isIncludedIn ;
+    ] ;
+.
+sysml:BusinessRequirement
+  rdf:type owl:Class ;
+  rdfs:label "Business requirement"^^xsd:string ;
+  rdfs:subClassOf sysml:Requirement ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:VerificationKind ;
+      owl:onProperty sysmo:hasVerifyMethodKind ;
+    ] ;
+.
+sysml:ConnectorProperty
+  rdf:type owl:Class ;
+  dc:description "These connectors specify instances (links) of the association block that exist due to instantiation of the block owning or inheriting the connector. The value of a connector property on an instance of a block will be exactly those link objects that are instances of the association block typing the connector referred to by the connector property. A connector property can optionally be shown in an internal block diagram with a dotted line from the connector line to a rectangle notating the connector property. The keyword \"connector\" before a property name indicates the property is a ConnectorProperty." ;
+  rdfs:label "Connector property"^^xsd:string ;
+  rdfs:subClassOf sysml:Property ;
+.
+sysml:ConstraintProperty
+  rdf:type owl:Class ;
+  dc:description "A constraint property is a property of any block that is typed by a constraint block. It holds a localized usage of the constraint block. Binding connectors may be used to bind the parameters of this constraint block to other properties of the block that contains the usage." ;
+  rdfs:label "Constraint Property"^^xsd:string ;
+  rdfs:subClassOf sysml:Property ;
+.
+sysml:ControlValue
+  rdf:type owl:Class ;
+  dc:description "The ControlValue enumeration is a type for treating control values as data and for UML control pins. It can be used as the type of behavior and operation parameters, object nodes, and attributes, and so on. The possible runtime values are given as enumeration literals. Modelers can extend the enumeration with additional literals, such as suspend, resume, with their own semantics."^^xsd:string ;
+  rdfs:label "Control value"^^xsd:string ;
+  rdfs:subClassOf sysml:EnumeratedValue ;
+.
+sysml:ControlValueEnumeration
+  rdf:type sysml:Enumeration ;
+  sysmo:element sysml:Disable ;
+  sysmo:element sysml:Enable ;
+  rdfs:label "Control value enumeration"^^xsd:string ;
+.
+sysml:DataFlowPort
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Port\"."^^xsd:string ;
+  rdfs:label "Data Flow Port"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowPort ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Quantity ;
+      owl:onProperty sysmo:hasExportedData ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Quantity ;
+      owl:onProperty sysmo:hasImportedData ;
+    ] ;
+.
+sysml:DemonstrationVerificationKind
+  rdf:type sysml:VerificationKind ;
+  dc:description "Demonstration indicates that verification will be performed by operation, movement or adjustment of the item under specific conditions to perform the design functions without recording of quantitative data. Demonstration is typically considered the least restrictive of the verification types."^^xsd:string ;
+  dtype:value "demonstration"^^xsd:string ;
+  rdfs:label "Demonstration verification kind"^^xsd:string ;
+.
+sysml:Disable
+  rdf:type sysml:ControlValue ;
+  rdfs:label "Disable"^^xsd:string ;
+.
+sysml:DistributedProperty
+  rdf:type owl:Class ;
+  dc:description "A DistributedProperty is a kind of BlockProperty used to apply a probability distribution to the values of the property. Specific distributions should be defined as subclasses of the DistributedProperty with the operands of the distributions represented by properties of those subclasses." ;
+  rdfs:label "Distributed Property"^^xsd:string ;
+  rdfs:subClassOf sysml:Property ;
+.
+sysml:Enable
+  rdf:type sysml:ControlValue ;
+  dtype:value "enable"^^xsd:string ;
+  rdfs:label "Enable"^^xsd:string ;
+.
+sysml:EnumeratedValue
+  rdf:type owl:Class ;
+  rdfs:label "Enumeration element"^^xsd:string ;
+  rdfs:subClassOf dtype:EnumeratedValue ;
+.
+sysml:Enumeration
+  rdf:type owl:Class ;
+  rdfs:label "Enumeration"^^xsd:string ;
+  rdfs:subClassOf dtype:Enumeration ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:EnumeratedValue ;
+      owl:onProperty sysmo:hasElement ;
+    ] ;
+.
+sysml:ErrorVerdict
+  rdf:type sysml:VerdictKind ;
+  dtype:value "error"^^xsd:string ;
+  rdfs:label "Error verdict"^^xsd:string ;
+.
+sysml:FailVerdict
+  rdf:type sysml:VerdictKind ;
+  dtype:value "fail"^^xsd:string ;
+  rdfs:label "Fail verdict"^^xsd:string ;
+.
+sysml:FlowDirection
+  rdf:type owl:Class ;
+  dc:description "FlowDirection, as defined in SysML, is an enumeration type that defines literals used for specifying input and output directions. FlowDirection is used by FlowProperties to indicate if the property is an input or an output with respect to its owner." ;
+  rdfs:label "Flow Direction"^^xsd:string ;
+  rdfs:subClassOf sysml:EnumeratedValue ;
+.
+sysml:FlowPort
+  rdf:type owl:Class ;
+  dc:description "Flow Ports are interaction points through which input and/or output of items such as data, material or some property such as torque, pressure or energy may flow. This enables the owning block to declare which items it may exchange with its environment and what are the interaction points through which the exchange is made. A FlowPort specifies the input and output items that may flow between a Block and its environment. FlowPorts are interaction points through which data, material or energy  'can' enter or leave the owning Block. The specification of what can flow is achieved by typing the FlowPort with a specification of things that flow. In general, flow ports are intended to be used for asynchronous, broadcast, or send and forget interactions." ;
+  rdfs:label "Flow Port"^^xsd:string ;
+  rdfs:subClassOf sysml:Port ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "Indicates the direction in which an Atomic FlowPort relays its items. If the direction is set to in then the items are relayed from an external connector via the FlowPort into the FlowPort's owner (or one of its Parts). If the direction is set to out, then the items are relayed from the FlowPort's owner, via the FlowPort, through an external connector attached to the FlowPort, and if the direction is set to inout then items can flow both ways. By default, the value is inout." ;
+      owl:allValuesFrom sysml:FlowDirection ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:InOutFlowProperty ;
+      owl:onProperty sysmo:hasBidirectionalFlow ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Connector ;
+      owl:onProperty sysmo:isSinkFor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Connector ;
+      owl:onProperty sysmo:isSourceFor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FlowSpecification ;
+      owl:onProperty sysmo:hasFlowSpecification ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasFlowSpecification ;
+    ] ;
+.
+sysml:FlowProperty
+  rdf:type owl:Class ;
+  dc:description "A FlowProperty signifies a single flow element to/from a Block. A FlowProperty is a Property such as temperature, pressure or torque, with a direction prefix (in | out | inout)." ;
+  rdfs:label "Flow Property"^^xsd:string ;
+  rdfs:subClassOf sysml:Property ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "Specifies if the property value is received from an external Block (direction=in), transmitted to an external Block (direction=out) or both (direction=inout)." ;
+      owl:allValuesFrom sysml:FlowDirection ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+.
+sysml:FunctionalRequirement
+  rdf:type owl:Class ;
+  rdfs:label "Functional requirement"^^xsd:string ;
+  rdfs:subClassOf sysml:Requirement ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:VerificationKind ;
+      owl:onProperty sysmo:hasVerifyMethodKind ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty dc:source ;
+    ] ;
+.
+sysml:HighRisk
+  rdf:type sysml:RiskKind ;
+  dtype:code 3 ;
+  dtype:order "3"^^xsd:nonNegativeInteger ;
+  dtype:value "high"^^xsd:string ;
+  rdfs:label "High risk"^^xsd:string ;
+.
+sysml:InFlow
+  rdf:type sysml:FlowDirection ;
+  dc:description "Indicates that the flow property is input to the owning Block." ;
+  dtype:code 1 ;
+  dtype:value "in"^^xsd:string ;
+  rdfs:label "In flow"^^xsd:string ;
+.
+sysml:InOutFlow
+  rdf:type sysml:FlowDirection ;
+  dc:description "Indicates that the flow property is both an input and an output of the owning Block." ;
+  dtype:code 3 ;
+  dtype:value "inout"^^xsd:string ;
+  rdfs:label "Out Flow"^^xsd:string ;
+.
+sysml:InOutFlowProperty
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Property\"."^^xsd:string ;
+  rdfs:label "In Out Flow Property"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowProperty ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysml:InFlow ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysml:OutFlow ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+.
+sysml:InboundFlowProperty
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Property\"."^^xsd:string ;
+  rdfs:label "Inbound Flow Property"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowProperty ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysml:InFlow ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  owl:disjointWith sysml:OutboundFlowProperty ;
+.
+sysml:InconclusiveVerdict
+  rdf:type sysml:VerdictKind ;
+  dtype:value "inconclusive"^^xsd:string ;
+  rdfs:label "Inconclusive verdict"^^xsd:string ;
+.
+sysml:InspectionVerificationKind
+  rdf:type sysml:VerificationKind ;
+  dc:description "Inspection indicates that verification will be performed by examination of the item, reviewing descriptive documentation, and comparing the appropriate characteristics with a predetermined standard to determine conformance to requirements without the use of special laboratory equipment or procedures."^^xsd:string ;
+  dtype:value "inspection"^^xsd:string ;
+  rdfs:label "Inspection verification kind"^^xsd:string ;
+.
+sysml:InteractionPort
+  rdf:type owl:Class ;
+  dc:description "An 'Interaction Port' corresponds to a SysML 'Standard Port'. This specifies the services the owning Block provides (offers) to its environment as well as the services that the owning Block expects (requires) of its environment. The specification of the services is achieved by typing the Standard Port by the provided and/or required interfaces. In general Standard Ports are used in the context of serviceoriented architectures, which is typical for software component architectures. Since standard ports contain operations which specify bi-directional flow of data, standard ports are typically used in the context of peer-to-peer synchronous request/reply communications. A special case of a service is signal reception, which signifies a one way communication of signal instances, where the handling of the request is asynchronous. For example, a Block representing an automatic transmission in a car could have a Standard Port that specifies that the Transmission Block can accept commands to switch gears." ;
+  rdfs:label "Standard Port"^^xsd:string ;
+  rdfs:subClassOf sysml:Port ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ProvidedInterface ;
+      owl:onProperty sysmo:providesService ;
+    ] ;
+.
+sysml:LowRisk
+  rdf:type sysml:RiskKind ;
+  dtype:code 1 ;
+  dtype:order "1"^^xsd:nonNegativeInteger ;
+  dtype:value "low"^^xsd:string ;
+  rdfs:label "Low risk"^^xsd:string ;
+.
+sysml:MediumRisk
+  rdf:type sysml:RiskKind ;
+  dtype:code 2 ;
+  dtype:order "2"^^xsd:nonNegativeInteger ;
+  dtype:value "medium"^^xsd:string ;
+  rdfs:label "Medium risk"^^xsd:string ;
+.
+sysml:NonAtomicFlowPort
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Port\"."^^xsd:string ;
+  rdfs:label "Non Atomic Flow Port"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowPort ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "Indicates if the flow of items of a non-atomic flow port maintain the directions specified in the FlowSpecification or the direction of every flow property specified in the FlowSpecification is reversed (IN becomes OUT and vice versa). If set to True then all the directions of the FlowProperties specified by the FlowSpecification that types a Non-Atomic FlowPort are relayed in the opposite direction (i.e., in flow property is treated as an out flow property by the FlowPort and vice-versa). By default, the value is False." ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:conjugated ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasFlowSpecification ;
+    ] ;
+.
+sysml:OperationsBlock
+  rdf:type owl:Class ;
+  rdfs:label "Operations block"^^xsd:string ;
+  rdfs:subClassOf sysmo:FunctionFeature ;
+.
+sysml:OutFlow
+  rdf:type sysml:FlowDirection ;
+  dc:description "Indicates that the flow property is an output of the owning Block." ;
+  dtype:code 2 ;
+  dtype:value "out"^^xsd:string ;
+  rdfs:label "Out Flow"^^xsd:string ;
+.
+sysml:OutboundFlowProperty
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Property\"."^^xsd:string ;
+  rdfs:label "Outbound Flow Property"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowProperty ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysml:OutFlow ;
+      owl:onProperty sysmo:hasDirection ;
+    ] ;
+  owl:disjointWith sysml:InboundFlowProperty ;
+.
+sysml:ParticipantProperty
+  rdf:type owl:Class ;
+  dc:description "To refer to linked objects and values of an instance of an association block, it is necessary for the modeler to specify which (participant) properties of the association block identify the instances being linked at which end of the association. The value of a participant property on an instance (link) of the association block is the value or object at the end of the link corresponding to this end of the association. Participant properties can be the ends of connectors owned by an association block. The association block can be the type of multiple other connectors to reuse the same internal structure for all the connectors. The keyword \"participant\" before a property name indicates the property is stereotyped by ParticipantProperty. The types of participant properties can be elided if desired. They are always the same as the corresponding association end type." ;
+  rdfs:label "Participant Property"^^xsd:string ;
+  rdfs:subClassOf sysml:Property ;
+.
+sysml:PassVerdict
+  rdf:type sysml:VerdictKind ;
+  dtype:value "pass"^^xsd:string ;
+  rdfs:label "Pass verdict"^^xsd:string ;
+.
+sysml:Port
+  rdf:type owl:Class ;
+  dc:description "A port is an interaction point between a block or part and its environment that is connected with other ports via connectors. The main motivation for specifying such ports on system elements is to allow the design of modular reusable blocks, with clearly defined interfaces. (Note: the block owns its ports and therefore the port is part of the blocks definition)." ;
+  rdfs:label "Port"^^xsd:string ;
+  rdfs:subClassOf sysml:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Block ;
+      owl:onProperty sysmo:isPortOf ;
+    ] ;
+.
+sysml:Property
+  rdf:type owl:Class ;
+  rdfs:label "Property"^^xsd:string ;
+  rdfs:subClassOf sysml:Thing ;
+.
+sysml:PropertyFlowPort
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Flow Port\"."^^xsd:string ;
+  rdfs:label "Property Flow Port"^^xsd:string ;
+  rdfs:subClassOf sysml:FlowPort ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:InboundFlowProperty ;
+      owl:onProperty sysmo:hasInboundFlow ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:OutboundFlowProperty ;
+      owl:onProperty sysmo:hasOutboundFlow ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasInboundFlow ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasOutboundFlow ;
+    ] ;
+.
+sysml:Requirement
+  rdf:type owl:Class ;
+  rdfs:label "Requirement"^^xsd:string ;
+  rdfs:subClassOf sysml:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Requirement ;
+      owl:onProperty sysmo:hasTracedTo ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Requirement ;
+      owl:onProperty sysmo:isDerivedFrom ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Requirement ;
+      owl:onProperty sysmo:isRefinedBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Requirement ;
+      owl:onProperty sysmo:isVerifiedBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:text ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:id ;
+    ] ;
+.
+sysml:RiskKind
+  rdf:type owl:Class ;
+  dc:description "1) High indicates an unacceptable level of risk, 2) Medium indicates an acceptable level of risk, and 3) Low indicates a minimal level of risk or no risk"^^xsd:string ;
+  rdfs:label "Risk kind"^^xsd:string ;
+  rdfs:subClassOf sysml:EnumeratedValue ;
+.
+sysml:TestVerificationKind
+  rdf:type sysml:VerificationKind ;
+  dc:description "Test indicates that verification will be performed through systematic exercising of the applicable item under appropriate conditions with instrumentation to measure required parameters and the collection, analysis, and evaluation of quantitative data to show that measured parameters equal or exceed specified requirements"^^xsd:string ;
+  rdfs:label "Test verification kind"^^xsd:string ;
+.
+sysml:Thing
+  rdf:type owl:Class ;
+  rdfs:label "Thing"^^xsd:string ;
+  rdfs:subClassOf owl:Thing ;
+.
+sysml:VerdictKind
+  rdf:type owl:Class ;
+  dc:description "Type of a return parameter of a TestCase must be VerdictKind, consistent with the UML Testing Profile."^^xsd:string ;
+  rdfs:label "Verdict kind"^^xsd:string ;
+  rdfs:subClassOf sysml:EnumeratedValue ;
+.
+sysml:VerdictKindEnumeration
+  rdf:type sysml:Enumeration ;
+  sysmo:element sysml:ErrorVerdict ;
+  sysmo:element sysml:FailVerdict ;
+  sysmo:element sysml:InconclusiveVerdict ;
+  sysmo:element sysml:PassVerdict ;
+  rdfs:label "Verdict kind enumeration"^^xsd:string ;
+.
+sysml:VerificationKind
+  rdf:type owl:Class ;
+  dc:description "An enumeraiton of the approaches to verification: anaylsis, demonstration, inspection and test. "^^xsd:string ;
+  rdfs:label "Verification kind"^^xsd:string ;
+  rdfs:subClassOf sysml:EnumeratedValue ;
+.
+sysml:hasBlock
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "has block"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysml:isBlockOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is block of"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isPartOf ;
+.
+sysml:isEncapsulated
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "is encapsulated"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysml:isHazardous
+  rdf:type owl:DatatypeProperty ;
+  dc:description "Indicates whether the command is hazardous."^^xsd:string ;
+  rdfs:label "Is Hazardous"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:AC_AMBER
+  rdf:type sysmo:AlarmColor ;
+  rdf:type sysmo:ModalCue ;
+.
+sysmo:AC_GREEN
+  rdf:type sysmo:AlarmColor ;
+  rdf:type sysmo:ModalCue ;
+.
+sysmo:AC_ORANGE
+  rdf:type sysmo:AlarmColor ;
+  rdf:type sysmo:ModalCue ;
+.
+sysmo:AC_RED
+  rdf:type sysmo:AlarmColor ;
+  rdf:type sysmo:ModalCue ;
+.
+sysmo:AC_YELLOW
+  rdf:type sysmo:AlarmColor ;
+  rdf:type sysmo:ModalCue ;
+.
+sysmo:AT_ADVISORY
+  rdf:type sysmo:AlarmType ;
+  rdf:type sysmo:EnumeratedValue ;
+  sysmo:hasModalCue sysmo:AC_YELLOW ;
+  sysmo:hasModalCue sysmo:AuC_ADVISORY ;
+  dtype:code 1 ;
+  dtype:displayName "A"^^xsd:string ;
+  dtype:order "1"^^xsd:nonNegativeInteger ;
+  dtype:value "advisory"^^xsd:string ;
+  rdfs:label "Advisory alarm type"^^xsd:string ;
+.
+sysmo:AT_CAUTION
+  rdf:type sysmo:AlarmType ;
+  rdf:type sysmo:EnumeratedValue ;
+  sysmo:hasModalCue sysmo:AC_AMBER ;
+  sysmo:hasModalCue sysmo:AuC_CAUTION ;
+  dtype:code 2 ;
+  dtype:displayName "C"^^xsd:string ;
+  dtype:order "2"^^xsd:nonNegativeInteger ;
+  dtype:value "caution"^^xsd:string ;
+  rdfs:label "Caution alarm type"^^xsd:string ;
+.
+sysmo:AT_CHANGE
+  rdf:type sysmo:AlarmType ;
+  rdf:type sysmo:EnumeratedValue ;
+  dtype:code 5 ;
+  dtype:displayName "C"^^xsd:string ;
+  dtype:order "5"^^xsd:nonNegativeInteger ;
+  dtype:value "change"^^xsd:string ;
+  rdfs:label "Change alarm type"^^xsd:string ;
+.
+sysmo:AT_EMERGENCY
+  rdf:type sysmo:AlarmType ;
+  rdf:type sysmo:EnumeratedValue ;
+  sysmo:hasModalCue sysmo:AC_RED ;
+  sysmo:hasModalCue sysmo:AuC_EMERGENCY ;
+  dtype:code 4 ;
+  dtype:displayName "E"^^xsd:string ;
+  dtype:order "4"^^xsd:nonNegativeInteger ;
+  dtype:value "emergency"^^xsd:string ;
+  rdfs:label "Emergency alarm type"^^xsd:string ;
+.
+sysmo:AT_WARNING
+  rdf:type sysmo:AlarmType ;
+  sysmo:hasModalCue sysmo:AC_ORANGE ;
+  sysmo:hasModalCue sysmo:AuC_WARNING ;
+  dtype:code 3 ;
+  dtype:displayName "W"^^xsd:string ;
+  dtype:order "3"^^xsd:nonNegativeInteger ;
+  dtype:value "warning"^^xsd:string ;
+  rdfs:label "Warning alarm type"^^xsd:string ;
+.
+sysmo:AbnormalCondition
+  rdf:type owl:Class ;
+  rdfs:label "Abnormal condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:IncidentCondition ;
+      owl:onProperty sysmo:indicates ;
+    ] ;
+.
+sysmo:Actuator
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Device\"."^^xsd:string ;
+  rdfs:label "Actuator"^^xsd:string ;
+  rdfs:subClassOf sysmo:Device ;
+  owl:equivalentClass sysmo:Effector ;
+.
+sysmo:AdvisoryAlarm
+  rdf:type owl:Class ;
+  dc:description "Anomalous conditions in which a system or operations capability is degraded, but does not directly affect the crew or mission."^^xsd:string ;
+  rdfs:label "Advisory alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:Alarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_ADVISORY ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "1"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:Alarm
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_ADVISORY ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:AdvisoryAlarmHighLimit
+  rdf:type owl:Class ;
+  dc:description "An anomalous condition in which a system or operations capability is degraded, but does not directly affect the crew or mission."^^xsd:string ;
+  rdfs:label "Advisory alarm high limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:HighAlarmLimit ;
+  owl:disjointWith sysmo:AdvisoryAlarmLowLimit ;
+.
+sysmo:AdvisoryAlarmLimitsPair
+  rdf:type owl:Class ;
+  rdfs:label "Advisory alarm limits pair"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsPair ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasAdvisoryAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasAdvisoryAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_ADVISORY ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:advisoryDwellTime ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:AlarmLimitsPair
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_ADVISORY ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:AdvisoryAlarmLimitsSpecification
+  rdf:type owl:Class ;
+  dc:description "High and Low Limits for an Advisory Alarm."^^xsd:string ;
+  rdfs:label "Advisory Alarm Limits Specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsSpecification ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AdvisoryAlarmHighLimit ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AdvisoryAlarmLowLimit ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+.
+sysmo:AdvisoryAlarmLowLimit
+  rdf:type owl:Class ;
+  dc:description "An anomalous condition in which a system or operations capability is degraded, but does not directly affect the crew or mission."^^xsd:string ;
+  rdfs:label "Advisory alarm low limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:LowAlarmLimit ;
+.
+sysmo:Alarm
+  rdf:type owl:Class ;
+  dtype:todo "how to handle enumeration alarms [RH-JH:20100419]"^^xsd:string ;
+  rdfs:label "Alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <http://data.nasa.gov/qudt/1.0/schema/type#string64> ;
+      owl:onProperty sysmo:message ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmType ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ModalCue ;
+      owl:onProperty sysmo:hasModalCue ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:message ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+.
+sysmo:AlarmAuralType
+  rdf:type owl:Class ;
+  rdfs:label "Alarm Aural Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:AlarmColor
+  rdf:type owl:Class ;
+  rdfs:label "Alarm Color"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCue ;
+.
+sysmo:AlarmColorEnumeration
+  rdf:type sysmo:VisualCueEnumeration ;
+  dtype:element sysmo:AC_AMBER ;
+  dtype:element sysmo:AC_GREEN ;
+  dtype:element sysmo:AC_ORANGE ;
+  dtype:element sysmo:AC_RED ;
+  dtype:element sysmo:AC_YELLOW ;
+  rdfs:label "Alarm Color Enumeration"^^xsd:string ;
+.
+sysmo:AlarmLimit
+  rdf:type owl:Class ;
+  dc:description "An alarm limit can be an encoded or engineering value."^^xsd:string ;
+  rdfs:label "Alarm limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmModalCuesSpecification ;
+      owl:onProperty sysmo:hasModalCuesSpecification ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmType ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ValueType ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:double ;
+      owl:onProperty sysmo:dwellTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:limitValue ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:dwellTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:message ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:triggerCount ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+.
+sysmo:AlarmLimitsPair
+  rdf:type owl:Class ;
+  rdfs:label "Alarm limits pair"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmLimit ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmLimit ;
+      owl:onProperty sysmo:hasAlarmLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmLimit ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmType ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ValueType ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom xsd:double ;
+      owl:onProperty sysmo:dwellTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "2"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:dwellTime ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:triggerCount ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty dtype:inclusive ;
+    ] ;
+.
+sysmo:AlarmLimitsSpecification
+  rdf:type owl:Class ;
+  rdfs:label "Alarm limits specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmLimitsPair ;
+      owl:onProperty sysmo:hasAlarmLimitsPair ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAlarmLimitsPair ;
+    ] ;
+.
+sysmo:AlarmModalCuesSpecification
+  rdf:type owl:Class ;
+  rdfs:label "Alarm Modal Cues Specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AuralCueEnumeration ;
+      owl:onProperty sysmo:auralCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:IconicCueEnumeration ;
+      owl:onProperty sysmo:iconicCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:KinestheticCueEnumeration ;
+      owl:onProperty sysmo:kinestheticCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ModalCueEnumeration ;
+      owl:onProperty sysmo:modalCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:VisualCueEnumeration ;
+      owl:onProperty sysmo:visualCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:auralCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:iconicCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:kinestheticCueEnumeration ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:visualCueEnumeration ;
+    ] ;
+.
+sysmo:AlarmType
+  rdf:type owl:Class ;
+  dc:description "An \"Ordered Enumeration\" which is multi-modal with the following instance(s): \"Advisory alarm type\", \"Caution alarm type\", \"Emergency alarm type\", \"Warning alarm type\"."^^xsd:string ;
+  rdfs:label "Alarm Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:AlarmTypeEnumeration
+  rdf:type sysmo:Enumeration ;
+  sysmo:auralCueEnumeration sysmo:AuralCueTypeEnumeration ;
+  sysmo:visualCueEnumeration sysmo:AlarmColorEnumeration ;
+  dtype:element sysmo:AT_ADVISORY ;
+  dtype:element sysmo:AT_CAUTION ;
+  dtype:element sysmo:AT_CHANGE ;
+  dtype:element sysmo:AT_EMERGENCY ;
+  dtype:element sysmo:AT_WARNING ;
+  rdfs:label "Alarm Type Enumeration"^^xsd:string ;
+.
+sysmo:AlarmsSpecification
+  rdf:type owl:Class ;
+  rdfs:label "Alarms specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AdvisoryAlarmLimitsPair ;
+      owl:onProperty sysmo:hasAdvisoryAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:AlarmLimitsPair ;
+      owl:onProperty sysmo:hasAlarmLimitsPair ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CautionAlarmLimitsPair ;
+      owl:onProperty sysmo:hasCautionAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EmergencyAlarmLimitsPair ;
+      owl:onProperty sysmo:hasEmergencyAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:WarningAlarmLimitsPair ;
+      owl:onProperty sysmo:hasWarningAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:changeAlarm ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasAdvisoryAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasCautionAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasEmergencyAlarmLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasWarningAlarmLimits ;
+    ] ;
+.
+sysmo:Assembly
+  rdf:type owl:Class ;
+  rdfs:label "Assembly"^^xsd:string ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:AuC_ADVISORY
+  rdf:type sysmo:AuralCue ;
+  rdf:type sysmo:ModalCue ;
+  dtype:code "1"^^xsd:nonNegativeInteger ;
+  dtype:order "1"^^xsd:nonNegativeInteger ;
+  dtype:value "advisory"^^xsd:string ;
+  rdfs:label "Advisory sound"^^xsd:string ;
+.
+sysmo:AuC_CAUTION
+  rdf:type sysmo:AuralCue ;
+  rdf:type sysmo:ModalCue ;
+  dtype:code "2"^^xsd:nonNegativeInteger ;
+  dtype:order "2"^^xsd:nonNegativeInteger ;
+  dtype:value "caution"^^xsd:string ;
+  rdfs:label "Caution sound"^^xsd:string ;
+.
+sysmo:AuC_EMERGENCY
+  rdf:type sysmo:AuralCue ;
+  rdf:type sysmo:ModalCue ;
+  dtype:code "4"^^xsd:nonNegativeInteger ;
+  dtype:order "4"^^xsd:nonNegativeInteger ;
+  dtype:value "emergency"^^xsd:string ;
+  rdfs:label "Emergency sound"^^xsd:string ;
+.
+sysmo:AuC_WARNING
+  rdf:type sysmo:AuralCue ;
+  rdf:type sysmo:ModalCue ;
+  dtype:code "3"^^xsd:nonNegativeInteger ;
+  dtype:order "3"^^xsd:nonNegativeInteger ;
+  dtype:value "warning"^^xsd:string ;
+  rdfs:label "Warning sound"^^xsd:string ;
+.
+sysmo:AuralCue
+  rdf:type owl:Class ;
+  rdfs:label "Aural cue"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCue ;
+.
+sysmo:AuralCueEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Aural Cue Enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCueEnumeration ;
+.
+sysmo:AuralCueTypeEnumeration
+  rdf:type sysmo:AuralCueEnumeration ;
+  rdfs:label "Alarm Aural Type Enumeration"^^xsd:string ;
+.
+sysmo:BehaviorFeature
+  rdf:type owl:Class ;
+  dc:description "A block that describes an aspect of behavior."^^xsd:string ;
+  rdfs:label "Behavior Feature"^^xsd:string ;
+  rdfs:subClassOf sysml:Block ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:isFeatureOf ;
+    ] ;
+.
+sysmo:BindingConnector
+  rdf:type owl:Class ;
+  dc:description "A Binding Connector is a connector which specifies that the properties at both ends of the connector have equal values. If the properties at the ends of a binding connector are typed by a DataType or ValueType, the connector specifies that the instances of the properties must hold equal values, recursively through any nested properties within the connected properties. If the properties at the ends of a binding connector are typed by a Block, the connector specifies that the instances of the properties must refer to the same block instance." ;
+  rdfs:label "Binding Connector"^^xsd:string ;
+  rdfs:subClassOf sysmo:Connector ;
+.
+sysmo:BoundarySystem
+  rdf:type owl:Class ;
+  dc:description "A Boundary system is a special external system that serves as medium between another system and the system under development without having own interests in the communication. For example Bus system or Communication system."^^xsd:string ;
+  rdfs:label "Boundary system"^^xsd:string ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:CL_LOSS-OF-CREW
+  rdf:type sysmo:CatastrophicLoss ;
+  rdfs:label "Loss of crew"^^xsd:string ;
+.
+sysmo:CL_LOSS-OF-MISSION
+  rdf:type sysmo:CatastrophicLoss ;
+  rdfs:label "Loss of mission"^^xsd:string ;
+.
+sysmo:CL_LOSS-OF-VEHICLE
+  rdf:type sysmo:CatastrophicLoss ;
+  rdfs:label "Loss of vehicle"^^xsd:string ;
+.
+sysmo:CalibratedParameter
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Observed Property\"."^^xsd:string ;
+  rdfs:label "Calibrated Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:MeasuredParameter ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:calibrationType ;
+    ] ;
+.
+sysmo:Capability
+  rdf:type owl:Class ;
+  rdfs:label "Capability"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+    ] ;
+.
+sysmo:CatastrophicLoss
+  rdf:type owl:Class ;
+  dc:description "An enumeration of types of catastrophic loss such as \"Loss Of Vehicle\"."^^xsd:string ;
+  rdfs:label "Catastrophic loss"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:CatastrophicLossTypeEnumeration
+  rdf:type sysmo:Enumeration ;
+  sysmo:element sysmo:CL_LOSS-OF-CREW ;
+  sysmo:element sysmo:CL_LOSS-OF-MISSION ;
+  sysmo:element sysmo:CL_LOSS-OF-VEHICLE ;
+  rdfs:label "Catastrophic loss type enumeration"^^xsd:string ;
+.
+sysmo:Cause
+  rdf:type owl:Class ;
+  rdfs:label "Cause"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CauseType ;
+      owl:onProperty sysmo:hasCauseType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Failure ;
+      owl:onProperty sysmo:causes ;
+    ] ;
+.
+sysmo:CauseType
+  rdf:type owl:Class ;
+  rdfs:label "Cause Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:CautionAlarm
+  rdf:type owl:Class ;
+  dc:description "Conditions that are less time-critical but have the potential for further degradation if crew attention is not given. Included are faults, failures, and out of tolerance conditions for functions critical to mission success."^^xsd:string ;
+  rdfs:label "Caution alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:Alarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_CAUTION ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "2"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:Alarm
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_CAUTION ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:CautionAlarmLimitsPair
+  rdf:type owl:Class ;
+  rdfs:label "Caution alarm limits pair"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsPair ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasCautionAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasCautionAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:cautionDwellTime ;
+    ] ;
+.
+sysmo:CautionAlarmLimitsSpecification
+  rdf:type owl:Class ;
+  dc:description "High and Low Limits for a Caution Alarm."^^xsd:string ;
+  rdfs:label "Caution Alarm Limits Specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsSpecification ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CautionAlarmLowLimit ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CautionaryAlarmHighLimit ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+.
+sysmo:CautionAlarmLowLimit
+  rdf:type owl:Class ;
+  dc:description "Conditions that are less time-critical but have the potential for further degradation if crew attention is not given. Included are faults, failures, and out of tolerance conditions for functions critical to mission success."^^xsd:string ;
+  rdfs:label "Caution alarm low limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:AdvisoryAlarmLowLimit ;
+.
+sysmo:CautionaryAlarmHighLimit
+  rdf:type owl:Class ;
+  dc:description "Conditions that are less time-critical but have the potential for further degradation if crew attention is not given. Included are faults, failures, and out of tolerance conditions for functions critical to mission success."^^xsd:string ;
+  rdfs:label "Cautionary alarm high limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:AdvisoryAlarmHighLimit ;
+  owl:disjointWith sysmo:CautionAlarmLowLimit ;
+.
+sysmo:ChangeAlarm
+  rdf:type owl:Class ;
+  dtype:todo """sysmo:Alarm
+
+ and (sysmo:specification value _:x ) and (_:x sysmo:changeAlarm value \"true\"^^xsd:boolean))"""^^xsd:string ;
+  rdfs:subClassOf sysmo:Alarm ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:Alarm
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_CAUTION ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:Command
+  rdf:type owl:Class ;
+  rdfs:label "Command"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CommandSpecification ;
+      owl:onProperty sysmo:hasSpecification ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasSpecification ;
+    ] ;
+.
+sysmo:CommandSpecification
+  rdf:type owl:Class ;
+  rdfs:label "Command specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FailureCriticality ;
+      owl:onProperty sysmo:hasFailureCriticality ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasStimulus ;
+    ] ;
+.
+sysmo:Component
+  rdf:type owl:Class ;
+  dc:description "A  component is the lowest level of decomposition of a hierarchy of subsystems. As such it is typically a reusable entity. It may or may not correspond to LRUs or ORUs. A component can have Devices."^^xsd:string ;
+  rdfs:label "Component"^^xsd:string ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf sysmo:System ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Assembly ;
+      owl:onProperty sysmo:hasAssembly ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Device ;
+      owl:onProperty sysmo:hasDevice ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mechanism ;
+      owl:onProperty sysmo:hasMechanism ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:occurence ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:componentID ;
+    ] ;
+.
+sysmo:ComponentType
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Category\"."^^xsd:string ;
+  rdfs:label "Component Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ComponentType ;
+      owl:onProperty sysmo:subCategory ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ComponentType ;
+      owl:onProperty sysmo:subCategoryOf ;
+    ] ;
+.
+sysmo:Condition
+  rdf:type owl:Class ;
+  rdfs:label "Condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Condition ;
+      owl:onProperty sysmo:indicates ;
+    ] ;
+.
+sysmo:ConfigurationEffectivity
+  rdf:type owl:Class ;
+  rdfs:label "Configuration effectivity"^^xsd:string ;
+  rdfs:subClassOf sysmo:Effectivity ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/sysmo/1.0/osg/system#configurationID> ;
+    ] ;
+.
+sysmo:ConfigurationEffectivityList
+  rdf:type owl:Class ;
+  rdfs:label "Configuration effectivity list"^^xsd:string ;
+  rdfs:subClassOf sysmo:ConfigurationEffectivity ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "2"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/sysmo/1.0/osg/system#configurationID> ;
+    ] ;
+.
+sysmo:Connector
+  rdf:type owl:Class ;
+  dc:description "A connector binds two ports to support interconnection. A connector can be typed. A logical connector can be allocated to a more complex physical path depicting a set of parts, ports, and connectors." ;
+  rdfs:label "Connector"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowPort ;
+      owl:onProperty sysmo:hasSink ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowPort ;
+      owl:onProperty sysmo:hasSource ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasSink ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasSource ;
+    ] ;
+.
+sysmo:ConnectorEnd
+  rdf:type owl:Class ;
+  rdfs:label "Connector End"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Constraint
+  rdf:type owl:Class ;
+  rdfs:label "Constraint"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Property ;
+      owl:onProperty sysmo:involvesProperty ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:MathsExpression ;
+      owl:onProperty sysmo:hasExpression ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasExpression ;
+    ] ;
+.
+sysmo:ConstraintsSet
+  rdf:type owl:Class ;
+  dc:description "The 'Constraints Set' has the same intent as the SysML 'Constraints Block'."^^xsd:string ;
+  rdfs:label "Constraints Set"^^xsd:string ;
+  rdfs:subClassOf sysml:Block ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Constraint ;
+      owl:onProperty sysmo:hasConstraint ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:isConstrainedBy ;
+    ] ;
+.
+sysmo:ControlledParameter
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Parameter\"."^^xsd:string ;
+  rdfs:label "Controlled Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:Parameter ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ParameterLimits ;
+      owl:onProperty sysmo:hasParameterLimits ;
+    ] ;
+.
+sysmo:CrewHabitationSystemType
+  rdf:type sysmo:HabitatSystemType ;
+  rdfs:label "Crew habitation system type"^^xsd:string ;
+.
+sysmo:CriticalEmergencyAlarm
+  rdf:type owl:Class ;
+  dc:description "A life threatening condition that is in the state of being corrected through crew or automated responses."^^xsd:string ;
+  rdfs:label "Distress Emergency alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:EmergencyAlarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "5"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+.
+sysmo:Criticality
+  rdf:type owl:Class ;
+  rdfs:label "Criticality"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:DateEffectivity
+  rdf:type owl:Class ;
+  rdfs:label "Date effectivity"^^xsd:string ;
+  rdfs:subClassOf sysmo:Effectivity ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#inclusive> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "1"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#effectivityDate> ;
+    ] ;
+.
+sysmo:DateEffectivityList
+  rdf:type owl:Class ;
+  rdfs:label "Date effectivity list"^^xsd:string ;
+  rdfs:subClassOf sysmo:DateEffectivity ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "2"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#effectivityDate> ;
+    ] ;
+  owl:disjointWith sysmo:DateEffectivityRange ;
+.
+sysmo:DateEffectivityRange
+  rdf:type owl:Class ;
+  rdfs:label "Date effectivity range"^^xsd:string ;
+  rdfs:subClassOf sysmo:DateEffectivity ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "2"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#effectivityDate> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#inclusive> ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:DateEffectivity
+          [
+            rdf:type owl:Restriction ;
+            owl:cardinality "2"^^xsd:int ;
+            owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#effectivityDate> ;
+          ]
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue "true"^^xsd:boolean ;
+            owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#inclusive> ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:DeltaLimit
+  rdf:type owl:Class ;
+  rdfs:label "Delta limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:DevelopmentSystemType
+  rdf:type owl:Class ;
+  rdfs:label "Development system type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:DevelopmentalFlightInstrumentationSystemType
+  rdf:type sysmo:DevelopmentSystemType ;
+  rdfs:label "Developmental Flight Instrumentation System Type"^^xsd:string ;
+.
+sysmo:Device
+  rdf:type owl:Class ;
+  dc:description "A kind of \"System\"."^^xsd:string ;
+  rdfs:label "Device"^^xsd:string ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf sysmo:System ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Assembly ;
+      owl:onProperty sysmo:hasAssembly ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Command ;
+      owl:onProperty sysmo:hasCommand ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Discipline ;
+      owl:onProperty sysmo:hasDiscipline ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:InterfaceQualifier ;
+      owl:onProperty sysmo:hasInterfaceQualifier ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mechanism ;
+      owl:onProperty sysmo:hasMechanism ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:SystemRoleQualifier ;
+      owl:onProperty sysmo:hasSystemRoleQualifier ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasInterfaceQualifier ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasSystemRoleQualifier ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:occurence ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:deviceID ;
+    ] ;
+.
+sysmo:DeviceType
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Category\"."^^xsd:string ;
+  rdfs:label "Device Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:DeviceType ;
+      owl:onProperty sysmo:subCategory ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:DeviceType ;
+      owl:onProperty sysmo:subCategoryOf ;
+    ] ;
+.
+sysmo:Discipline
+  rdf:type owl:Class ;
+  rdfs:label "Discipline"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:DistressEmergencyAlarm
+  rdf:type owl:Class ;
+  dc:description "A life threatening condition that requires immediate attention. Automated or predefined crew responses may be required before taking corrective action. Safe haven concept activation may be necessary. Included are the presence of fire and smoke, the presence of toxicity in the atmosphere, and the rapid loss of atmospheric pressure."^^xsd:string ;
+  rdfs:label "Distress Emergency alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:EmergencyAlarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "6"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+.
+sysmo:Effect
+  rdf:type owl:Class ;
+  rdfs:label "Effect"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Effect ;
+      owl:onProperty sysmo:isCausedBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EffectType ;
+      owl:onProperty sysmo:hasEffectType ;
+    ] ;
+.
+sysmo:EffectType
+  rdf:type owl:Class ;
+  rdfs:label "Effect Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Effectivity
+  rdf:type owl:Class ;
+  rdfs:label "Effectivity"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty <http://data.nasa.gov/core/1.0/schema/sc#inclusive> ;
+    ] ;
+.
+sysmo:Effector
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Device\"."^^xsd:string ;
+  rdfs:label "Effector"^^xsd:string ;
+  rdfs:subClassOf sysmo:Device ;
+.
+sysmo:Element
+  rdf:type owl:Class ;
+  rdfs:label "System element"^^xsd:string ;
+  rdfs:subClassOf sysmo:IdentifiableConcept ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Assembly ;
+      owl:onProperty sysmo:hasAssembly ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Component ;
+      owl:onProperty sysmo:hasComponent ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Device ;
+      owl:onProperty sysmo:hasDevice ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mechanism ;
+      owl:onProperty sysmo:hasMechanism ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:SubSystem ;
+      owl:onProperty sysmo:hasSubsystem ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:systemID ;
+    ] ;
+.
+sysmo:EmergencyAlarm
+  rdf:type owl:Class ;
+  dc:description "A \"Alarm\"."^^xsd:string ;
+  rdfs:label "Emergency alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:Alarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_ADVISORY ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_CAUTION ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "4"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:Alarm
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_CAUTION ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:EmergencyAlarmHighLimit
+  rdf:type owl:Class ;
+  dc:description "A life threatening condition that requires immediate attention. Automated or predefined crew responses may be required before taking corrective action. Safe haven concept activation may be necessary. Included are the presence of fire and smoke, the presence of toxicity in the atmosphere, and the rapid loss of atmospheric pressure."^^xsd:string ;
+  rdfs:label "Emergency alarm high limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:WarningAlarmHighLimit ;
+  owl:disjointWith sysmo:EmergencyAlarmLowLimit ;
+.
+sysmo:EmergencyAlarmLimitsPair
+  rdf:type owl:Class ;
+  rdfs:label "Emergency alarm limits"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsPair ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasEmergencyAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasEmergencyAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:emergencyDwellTime ;
+    ] ;
+.
+sysmo:EmergencyAlarmLimitsSpecification
+  rdf:type owl:Class ;
+  dc:description "High and Low Limits for an Emergency Alarm."^^xsd:string ;
+  rdfs:label "Emergency alarm monitor"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsSpecification ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EmergencyAlarmHighLimit ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EmergencyAlarmLowLimit ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+.
+sysmo:EmergencyAlarmLowLimit
+  rdf:type owl:Class ;
+  dc:description "A life threatening condition that requires immediate attention. Automated or predefined crew responses may be required before taking corrective action. Safe haven concept activation may be necessary. Included are the presence of fire and smoke, the presence of toxicity in the atmosphere, and the rapid loss of atmospheric pressure."^^xsd:string ;
+  rdfs:label "Emergency alarm low limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:WarningAlarmLowLimit ;
+.
+sysmo:EncodedValueAlarmLimit
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:AlarmLimit ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:EncodedValueType ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+  owl:disjointWith sysmo:EngUnitAlarmLimit ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:AlarmLimit
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:EncodedValueType ;
+            owl:onProperty sysmo:valueType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:EngUnitAlarmLimit
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:AlarmLimit ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EngUnitsValue ;
+      owl:onProperty sysmo:limitValue ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:EngineeringUnitsType ;
+      owl:onProperty sysmo:valueType ;
+    ] ;
+  owl:disjointWith sysmo:EncodedValueAlarmLimit ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:AlarmLimit
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:EngineeringUnitsType ;
+            owl:onProperty sysmo:valueType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:Entity
+  rdf:type owl:Class ;
+  rdfs:label "Entity"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Feature ;
+      owl:onProperty sysmo:hasFeature ;
+    ] ;
+.
+sysmo:EnumeratedValue
+  rdf:type owl:Class ;
+  rdfs:label "System Enumerated Value"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+  rdfs:subClassOf dtype:EnumeratedValue ;
+.
+sysmo:Enumeration
+  rdf:type owl:Class ;
+  rdfs:label "Enumeration"^^xsd:string ;
+  rdfs:label "System Enumeration"^^xsd:string ;
+  rdfs:subClassOf dtype:Enumeration ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:EnumeratedValue ;
+      owl:onProperty sysmo:hasElement ;
+    ] ;
+.
+sysmo:Event
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Event ;
+      owl:onProperty sysmo:causes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Event ;
+      owl:onProperty sysmo:isCausedBy ;
+    ] ;
+.
+sysmo:Facility
+  rdf:type owl:Class ;
+  dc:description "A kind of \"System\"."^^xsd:string ;
+  rdfs:label "Facility"^^xsd:string ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:Failure
+  rdf:type owl:Class ;
+  dc:description "A failure is a malfunction of some device, subsystem, system or element."^^xsd:string ;
+  rdfs:label "Failure"^^xsd:string ;
+  rdfs:subClassOf sysmo:UnIntendedBehavior ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Cause ;
+      owl:onProperty sysmo:isCausedBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Effect ;
+      owl:onProperty sysmo:hasEffect ;
+    ] ;
+.
+sysmo:FailureCriticality
+  rdf:type owl:Class ;
+  dc:description """1 - Single failure that could result in loss of life or vehicle.
+2 - Single failure that could result in a loss of mission.
+1R# - Redundant hardware item, which if all failed, could cause loss of life or vehicle. A number is used to indicate the number of redundant paths or strings (e.g. 1R3 - a triple redundant item).
+1S - Failure in a safety or hazard monitoring hardware item that could cause the system to fail to detect, combat, or operate when needed during a hazardous condition, potentially resulting in loss of life or vehicle. 
+2R - Redundant hardware item, which if all failed, could cause a loss of mission.
+3 - All other failures."""^^xsd:string ;
+  dc:description "Criticality is defined in terms of the following levels of severity: Safety Critical, Mission Critical, Loss of Functionality."^^xsd:string ;
+  rdfs:label "Failure criticality"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:CatastrophicLoss ;
+      owl:onProperty sysmo:hasPossibleConsequence ;
+    ] ;
+.
+sysmo:Feature
+  rdf:type owl:Class ;
+  rdfs:comment "The NASA use of feature is consistent with the NIST definition of feature: a feature is a subset of the form of an artifact that has some function associated with it. An artifact may have design features, analysis features, manufacturing features, interface features (sometimes referred to as ports) as determined by their respective functions (NISTIR 6736)."^^xsd:string ;
+  rdfs:label "Feature"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Component ;
+      owl:onProperty sysmo:hasComponent ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Device ;
+      owl:onProperty sysmo:hasDevice ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:hasSubsystem ;
+    ] ;
+.
+sysmo:FlightIntent
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Intent\"."^^xsd:string ;
+  rdfs:label "Flight Intent"^^xsd:string ;
+  rdfs:subClassOf sysmo:Intent ;
+  owl:disjointWith sysmo:NonflightIntent ;
+.
+sysmo:FlowDirectionEnumeration
+  rdf:type sysmo:EnumerationType ;
+  sysmo:element sysml:InFlow ;
+  sysmo:element sysml:InOutFlow ;
+  sysmo:element sysml:OutFlow ;
+  rdfs:label "Flow direction enumeration"^^xsd:string ;
+.
+sysmo:FlowSpecification
+  rdf:type owl:Class ;
+  dc:description "A FlowSpecification specifies inputs and outputs as a set of flow properties. A flow specification is used by Flow Ports to specify what flow items can flow via the port." ;
+  rdfs:label "Flow Specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowProperty ;
+      owl:onProperty sysmo:hasInput ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:FlowProperty ;
+      owl:onProperty sysmo:hasOutput ;
+    ] ;
+.
+sysmo:Form
+  rdf:type owl:Class ;
+  rdfs:label "Form"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Entity ;
+    ] ;
+.
+sysmo:FullyFunctionalCondition
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Condition\"."^^xsd:string ;
+  rdfs:label "Fully Functional Condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+  owl:disjointWith sysmo:NonFunctionalCondition ;
+  owl:disjointWith sysmo:PartiallyFunctionalCondition ;
+.
+sysmo:Function
+  rdf:type owl:Class ;
+  rdfs:label "Function"^^xsd:string ;
+  rdfs:subClassOf sysmo:IdentifiableConcept ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <http://www.sysmo.org/ontologies/sysmo.owl#Value> ;
+      owl:onProperty sysmo:requiresValue ;
+    ] ;
+.
+sysmo:FunctionFeature
+  rdf:type owl:Class ;
+  dc:description "The notion of 'FunctionFeature' can be compared to the SysML notion of an 'Operations Block'." ;
+  rdfs:label "Operational Feature"^^xsd:string ;
+  rdfs:subClassOf sysml:Block ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Capability ;
+      owl:onProperty sysmo:realizes ;
+    ] ;
+.
+sysmo:FunctionType
+  rdf:type owl:Class ;
+  rdfs:label "Function type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FunctionType ;
+      owl:onProperty sysmo:subCategory ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FunctionType ;
+      owl:onProperty sysmo:subCategoryOf ;
+    ] ;
+.
+sysmo:HabitatSystemType
+  rdf:type owl:Class ;
+  rdfs:label "Habitat system type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:HighAlarmLimit
+  rdf:type owl:Class ;
+  dc:description "A high alarm limit is a value which when transgressed will cause an alarm will be generated."^^xsd:string ;
+  rdfs:label "High alarm limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimit ;
+  owl:disjointWith sysmo:LowAlarmLimit ;
+.
+sysmo:IconicCueEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Iconic cue enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCueEnumeration ;
+.
+sysmo:IdentifiableConcept
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:sid ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:cui ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:version ;
+    ] ;
+.
+sysmo:Identifier
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Identifier\"."^^xsd:string ;
+  rdfs:label "Identifier"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:IncidentCondition
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Condition\"."^^xsd:string ;
+  rdfs:label "Incident Condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+.
+sysmo:IntendedBehavior
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Behavior Feature\"."^^xsd:string ;
+  rdfs:label "Intended Behavior"^^xsd:string ;
+  rdfs:subClassOf sysmo:BehaviorFeature ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "true"^^xsd:boolean ;
+      owl:onProperty sysmo:intentional ;
+    ] ;
+  owl:disjointWith sysmo:UnIntendedBehavior ;
+.
+sysmo:Intent
+  rdf:type owl:Class ;
+  rdfs:label "Intent"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Interface
+  rdf:type owl:Class ;
+  rdfs:label "Interface"^^xsd:string ;
+  rdfs:subClassOf sysmo:IdentifiableConcept ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:interfacesWith ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom [
+          rdf:type owl:Class ;
+          owl:unionOf (
+              sysmo:Operation
+              sysmo:Signal
+            ) ;
+        ] ;
+      owl:onProperty sysmo:specifies ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:minCardinality "2"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:interfacesWith ;
+    ] ;
+.
+sysmo:InterfaceQualifier
+  rdf:type owl:Class ;
+  rdfs:label "Interface Qualifier"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:IsSystemUsedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "system used by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isUsedBy ;
+  owl:inverseOf sysmo:usesSystem ;
+.
+sysmo:ItemFlow
+  rdf:type owl:Class ;
+  dc:description "An Item Flow describes the flow of items across a connector or an association. It may constrain the item exchange between Blocks, Block usages or FlowPorts as specified by their FlowProperties. For example, a Pump connected to a Tank: the Pump has an out FlowProperty of type Liquid and the Tank has an in FlowProperty of type Liquid. To signify that only Water flow between the Pump and the Tank, we can specify an ItemFlow of type Water on the connector." ;
+  rdfs:label "Item Flow"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:KinestheticCueEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Kinesthetic cue enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCueEnumeration ;
+.
+sysmo:LimitType
+  rdf:type owl:Class ;
+  dc:description "Determines if the low and high limits are to be interpreted as the lower and upper bounds of valid or invalid data. If the Limit Type is Inclusive, then any value between the low and high limits is considered acceptable. Values below the low limit or above the high limit would be considered invalid. If the Limit Type is Exclusive, then any value between the low and high limits is considered unacceptable. Values below the low limit or above the high limit would be considered valid." ;
+  rdfs:label "Limit Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Location
+  rdf:type owl:Class ;
+  dc:description "A descriptor for the location that something has within a system or vehicle." ;
+  rdfs:label "Location"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:busID ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#subsystemID> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#unitID> ;
+    ] ;
+.
+sysmo:LowAlarmLimit
+  rdf:type owl:Class ;
+  dc:description "A \"Alarm limit\"."^^xsd:string ;
+  rdfs:label "Low alarm limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimit ;
+.
+sysmo:MODE_ANOMALY
+  rdf:type sysmo:Mode ;
+  sysmo:description "An incident has occurred that indicates a possible failure"^^xsd:string ;
+  dtype:code 10 ;
+  dtype:description "An incident has occurred that indicates a possible failure"^^xsd:string ;
+  dtype:value "anomaly"^^xsd:string ;
+  rdfs:label "Anomaly mode"^^xsd:string ;
+.
+sysmo:MODE_COLD-START
+  rdf:type sysmo:Mode ;
+  sysmo:description "The system is in condition ready for a complete restart and needs configuration data"^^xsd:string ;
+  dtype:code 3 ;
+  dtype:description "The system is in condition ready for a complete restart and needs configuration data"^^xsd:string ;
+  dtype:value "coldstart"^^xsd:string ;
+  rdfs:label "Cold start mode"^^xsd:string ;
+.
+sysmo:MODE_DEGRADED
+  rdf:type sysmo:Mode ;
+  dtype:code 11 ;
+  dtype:value "degraded"^^xsd:string ;
+  rdfs:label "Degraded mode"^^xsd:string ;
+.
+sysmo:MODE_FAILED
+  rdf:type sysmo:Mode ;
+  dtype:code 15 ;
+  dtype:value "failed"^^xsd:string ;
+  rdfs:label "Failed mode"^^xsd:string ;
+.
+sysmo:MODE_HOT-START
+  rdf:type sysmo:Mode ;
+  dtype:code 5 ;
+  dtype:value "hotstart"^^xsd:string ;
+  rdfs:label "Hot start mode"^^xsd:string ;
+.
+sysmo:MODE_NORMAL
+  rdf:type sysmo:Mode ;
+  dtype:code 6 ;
+  dtype:value "normal"^^xsd:string ;
+  rdfs:label "Normal mode"^^xsd:string ;
+.
+sysmo:MODE_RECON
+  rdf:type sysmo:Mode ;
+  dtype:code 2 ;
+  dtype:value "recon"^^xsd:string ;
+  rdfs:label "Recon mode"^^xsd:string ;
+.
+sysmo:MODE_RECOVERY
+  rdf:type sysmo:Mode ;
+  dtype:code 9 ;
+  dtype:value "recovery"^^xsd:string ;
+  rdfs:label "Recovery mode"^^xsd:string ;
+.
+sysmo:MODE_SAFED
+  rdf:type sysmo:Mode ;
+  sysmo:description "The system is in a state for maintenance to be performed"^^xsd:string ;
+  dtype:code 12 ;
+  dtype:description "The system is in a state for maintenance to be performed"^^xsd:string ;
+  dtype:value "safed"^^xsd:string ;
+  rdfs:label "Safed mode"^^xsd:string ;
+.
+sysmo:MODE_SHUTDOWN
+  rdf:type sysmo:Mode ;
+  dtype:code 1 ;
+  dtype:value "shutdown"^^xsd:string ;
+  rdfs:label "Shut down mode"^^xsd:string ;
+.
+sysmo:MODE_STANDBY
+  rdf:type sysmo:Mode ;
+  dtype:code 7 ;
+  dtype:value "standby"^^xsd:string ;
+  rdfs:label "Standby mode"^^xsd:string ;
+.
+sysmo:MODE_TEST
+  rdf:type sysmo:Mode ;
+  dtype:code 8 ;
+  dtype:value "test"^^xsd:string ;
+  rdfs:label "Test mode"^^xsd:string ;
+.
+sysmo:MODE_WARM-START
+  rdf:type sysmo:Mode ;
+  dtype:code 4 ;
+  dtype:value "warmstart"^^xsd:string ;
+  rdfs:label "Warm start mode"^^xsd:string ;
+.
+sysmo:MathsExpression
+  rdf:type owl:Class ;
+  rdfs:label "Maths expression"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:MeasuredParameter
+  rdf:type owl:Class ;
+  dc:description "A \"Parameter\" that is measured by some sensor"^^xsd:string ;
+  rdfs:label "Measured parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:Parameter ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:byteOrder ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:negativeDeltaLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:positiveDeltaLimit ;
+    ] ;
+.
+sysmo:Measurement
+  rdf:type owl:Class ;
+  rdfs:label "Measurement"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:MeasurementSpecification ;
+      owl:onProperty sysmo:hasSpecification ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:hasSpecification ;
+    ] ;
+.
+sysmo:MeasurementSpecification
+  rdf:type owl:Class ;
+  rdfs:label "Measurement specification"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Parameter ;
+      owl:onProperty sysmo:isSpecificationFor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Sensor ;
+      owl:onProperty sysmo:isMeasuredBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:isMeasuredBy ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:isSpecificationFor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:dateUpdated ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:description ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:shortDescription ;
+    ] ;
+.
+sysmo:Mechanism
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:Element ;
+.
+sysmo:ModalCue
+  rdf:type owl:Class ;
+  rdfs:label "Modal cue"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:ModalCueEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Modal Cue Enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:Enumeration ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ModalCue ;
+      owl:onProperty dtype:default ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ModalCue ;
+      owl:onProperty dtype:element ;
+    ] ;
+.
+sysmo:ModalCuesEnumeration
+  rdf:type sysmo:ModalCueEnumeration ;
+  dtype:element sysmo:AC_AMBER ;
+  dtype:element sysmo:AC_GREEN ;
+  dtype:element sysmo:AC_ORANGE ;
+  dtype:element sysmo:AC_RED ;
+  dtype:element sysmo:AC_YELLOW ;
+  dtype:element sysmo:AuC_ADVISORY ;
+  dtype:element sysmo:AuC_CAUTION ;
+  dtype:element sysmo:AuC_EMERGENCY ;
+  dtype:element sysmo:AuC_WARNING ;
+  rdfs:label "Modal cues enumeration"^^xsd:string ;
+.
+sysmo:Mode
+  rdf:type owl:Class ;
+  dc:description "An enumeration with the following elements: \"Anomaly mode\", \"Cold start mode\", \"Degraded mode\", \"Failed mode\", \"Hot start mode\", \"Normal mode\", \"Recon mode\", \"Recovery mode\", \"Safed mode\", \"Shut down mode\", \"Standby mode\", \"Test mode\", \"Warm start mode\"."^^xsd:string ;
+  rdfs:label "Mode"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:Model
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Model\"."^^xsd:string ;
+  rdfs:label "Model"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Module
+  rdf:type owl:Class ;
+  dc:description "A kind of \"System\"."^^xsd:string ;
+  rdfs:label "Module"^^xsd:string ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:MultiModalEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Multi modal enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:Enumeration ;
+.
+sysmo:NestedConnectorEnd
+  rdf:type owl:Class ;
+  dc:description "The NestedConnectorEnd is a kind of ConnectorEnd for which the connected property may be identified by a multi-level path of accessible properties from the block that owns the connector." ;
+  rdfs:label "Nested Connector End"^^xsd:string ;
+  rdfs:subClassOf sysmo:ConnectorEnd ;
+.
+sysmo:NonCalibratedParameter
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Observed Property\"."^^xsd:string ;
+  rdfs:label "Non Calibrated Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:MeasuredParameter ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "0"^^xsd:int ;
+      owl:onProperty sysmo:calibrationType ;
+    ] ;
+  owl:disjointWith sysmo:CalibratedParameter ;
+.
+sysmo:NonControlledParameter
+  rdf:type owl:Class ;
+  dc:description "A \"Parameter\" that is not controlled."^^xsd:string ;
+  rdfs:label "Non-controlled Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:Parameter ;
+  owl:disjointWith sysmo:ControlledParameter ;
+.
+sysmo:NonFunctionalCondition
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Condition\"."^^xsd:string ;
+  rdfs:label "Non Functional Condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+  owl:disjointWith sysmo:FullyFunctionalCondition ;
+  owl:disjointWith sysmo:PartiallyFunctionalCondition ;
+.
+sysmo:NonFunctionalRequirement
+  rdf:type owl:Class ;
+  rdfs:label "Non functional requirement"^^xsd:string ;
+  rdfs:subClassOf sysml:Requirement ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty dc:source ;
+    ] ;
+.
+sysmo:NonflightIntent
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Intent\"."^^xsd:string ;
+  rdfs:label "Nonflight Intent"^^xsd:string ;
+  rdfs:subClassOf sysmo:Intent ;
+  owl:disjointWith sysmo:FlightIntent ;
+.
+sysmo:NormalCondition
+  rdf:type owl:Class ;
+  rdfs:label "Normal condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FullyFunctionalCondition ;
+      owl:onProperty sysmo:indicates ;
+    ] ;
+.
+sysmo:Operation
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Operation\"."^^xsd:string ;
+  rdfs:label "Operation"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:OperationalGoal
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Goal\"."^^xsd:string ;
+  rdfs:label "Operational Goal"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:OperationsSystemType
+  rdf:type owl:Class ;
+  rdfs:label "Operations system type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:PLT_EXCLUSIVE
+  rdf:type sysmo:ParameterLimitType ;
+  dc:description "If the Limit Type is Exclusive, then any value between the Low Limit and High Limit is considered unacceptable. Values below the Low Limit or above the High Limit would be considered valid." ;
+  dtype:code 1 ;
+  dtype:value "exclusive"^^xsd:string ;
+  rdfs:label "Exclusive limit type"^^xsd:string ;
+.
+sysmo:PLT_INCLUSIVE
+  rdf:type sysmo:ParameterLimitType ;
+  dc:description "If the Limit Type is Inclusive, then any value between the Low Limit and High Limit is considered acceptable. Values below the Low Limit or above the High Limit would be considered invalid." ;
+  dtype:code 2 ;
+  dtype:value "inclusive"^^xsd:string ;
+  rdfs:label "Inclusive limit type"^^xsd:string ;
+.
+sysmo:Parameter
+  rdf:type owl:Class ;
+  dc:description "A measured or controlled parameter of some sensor or effector within a system hierarchy" ;
+  rdfs:label "Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:isParameterOf ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:controllableParameter ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasLocation ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasPropertyType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasConfidentiality ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:occurence ;
+    ] ;
+.
+sysmo:ParameterLimitType
+  rdf:type owl:Class ;
+  dc:description "An enumeration with the following instance(s): \"Exclusive limit type\", \"Inclusive limit type\"."^^xsd:string ;
+  rdfs:label "Parameter Limit Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:ParameterLimitTypeEnumeration
+  rdf:type owl:Class ;
+  sysmo:default sysmo:PLT_INCLUSIVE ;
+  sysmo:element sysmo:PLT_EXCLUSIVE ;
+  sysmo:element sysmo:PLT_INCLUSIVE ;
+  rdfs:label "Parameter limit type enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:Enumeration ;
+.
+sysmo:ParameterLimits
+  rdf:type owl:Class ;
+  sysmo:description "'Parameter Limits' is a specification of low and high limits for a parameter that are applicable in a given system mode or condition."^^xsd:string ;
+  rdfs:label "Parameter Limits"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "The high limit value for a parameter.  The Limit Type specifies whether High Limit is considered to be the highest allowed or disallowed value. The value may be calibrated or uncalibrated (see Calibrated Limits attribute). The encoded form of the provided value must be consistent with the Data Type and Parameter Length specified for the parameter, as defined in this table. Value is undefined for predefined parameters and optional for modifiable parameters. If provided the value must be greater than the Low Limit." ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:parameterHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description "The low limit value for a parameter.  The Limit Type specifies whether Low Limit is considered to be the lowest allowed or disallowed value. The value may be calibrated or uncalibrated (see Calibrated Limits attribute). The encoded form of the provided value must be consistent with the Data Type and Parameter Length specified for the parameter, as defined in this table. Value is undefined for predefined parameters and optional for modifiable parameters. If provided the value must be less than the High Limit." ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:parameterLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      sysmo:default "false"^^xsd:boolean ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:encodedValueLimits ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Condition ;
+      owl:onProperty sysmo:inCondition ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ControlledParameter ;
+      owl:onProperty sysmo:hasParameterLimitsFor ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:LimitType ;
+      owl:onProperty sysmo:hasParameterLimitType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mode ;
+      owl:onProperty sysmo:inMode ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasParameterLimitType ;
+    ] ;
+.
+sysmo:ParameterType
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Category\"."^^xsd:string ;
+  rdfs:label "Parameter Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ParameterType ;
+      owl:onProperty sysmo:subCategory ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ParameterType ;
+      owl:onProperty sysmo:subCategoryOf ;
+    ] ;
+.
+sysmo:Part
+  rdf:type owl:Class ;
+  dc:description "A part is the smallest unit of decomposition of a component."^^xsd:string ;
+  rdfs:label "Part"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:partNumber ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:revision ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:serialNumber ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:version ;
+    ] ;
+.
+sysmo:PartiallyFunctionalCondition
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Condition\"."^^xsd:string ;
+  rdfs:label "Partially Functional Condition"^^xsd:string ;
+  rdfs:subClassOf sysmo:Condition ;
+  owl:disjointWith sysmo:FullyFunctionalCondition ;
+  owl:disjointWith sysmo:NonFunctionalCondition ;
+.
+sysmo:PerformanceViewPoint
+  rdf:type owl:Class ;
+  dc:description "A kind of \"View Point\"."^^xsd:string ;
+  rdfs:label "Performance View Point"^^xsd:string ;
+  rdfs:subClassOf sysmo:ViewPoint ;
+.
+sysmo:PhysicalRequirement
+  rdf:type owl:Class ;
+  dc:description "Requirement that specifies physical characteristics and/or physical constraints of the system, or a system part."^^xsd:string ;
+  rdfs:label "Physical requirement"^^xsd:string ;
+  rdfs:subClassOf sysml:Requirement ;
+.
+sysmo:PhysicalSystem
+  rdf:type owl:Class ;
+  dc:description "A kind of \"System\"."^^xsd:string ;
+  rdfs:label "Physical System"^^xsd:string ;
+  rdfs:subClassOf sysmo:System ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Form ;
+      owl:onProperty sysmo:hasForm ;
+    ] ;
+.
+sysmo:PotentialFailure
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Failure\"."^^xsd:string ;
+  rdfs:label "Potential Failure"^^xsd:string ;
+  rdfs:subClassOf sysmo:Failure ;
+.
+sysmo:ProvidedInterface
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Interface\"."^^xsd:string ;
+  rdfs:label "Provided Interface"^^xsd:string ;
+  rdfs:subClassOf sysmo:Interface ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Operation ;
+      owl:onProperty sysmo:specifiesProvidedOperation ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Signal ;
+      owl:onProperty sysmo:specifiesProvidedSignal ;
+    ] ;
+.
+sysmo:QuantifiedGoal
+  rdf:type owl:Class ;
+  rdfs:label "Quantified Goal"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Goal ;
+      owl:onProperty sysmo:goal ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:goal ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:description ;
+    ] ;
+.
+sysmo:Quantity
+  rdf:type owl:Class ;
+  rdfs:label "Quantity"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Remedy
+  rdf:type owl:Class ;
+  rdfs:label "Remedy"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Failure ;
+      owl:onProperty sysmo:isRemedyFor ;
+    ] ;
+.
+sysmo:Representation
+  rdf:type owl:Class ;
+  rdfs:label "Representation"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:RequiredInterface
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Interface\"."^^xsd:string ;
+  rdfs:label "Required Interface"^^xsd:string ;
+  rdfs:subClassOf sysmo:Interface ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Operation ;
+      owl:onProperty sysmo:specifiesRequiredOperation ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Signal ;
+      owl:onProperty sysmo:specifiesRequiredSignal ;
+    ] ;
+.
+sysmo:RiskKindEnumeration
+  rdf:type sysml:Enumeration ;
+  sysmo:element sysml:HighRisk ;
+  sysmo:element sysml:LowRisk ;
+  sysmo:element sysml:MediumRisk ;
+  rdfs:label "Risk kind enumeration"^^xsd:string ;
+.
+sysmo:SRQ_AUXILIARY-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  sysmo:CxSID_fragment "Ax"^^xsd:string ;
+  sysmo:commonName "Auxiliary"^^xsd:string ;
+  sysmo:reservedSID "true"^^xsd:boolean ;
+  dtype:value "aux"^^xsd:string ;
+  rdfs:label "System Role - Auxiliary"^^xsd:string ;
+.
+sysmo:SRQ_BACKUP-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  sysmo:CxSID_fragment "BU"^^xsd:string ;
+  sysmo:commonName "backup"^^xsd:string ;
+  sysmo:reservedSID "true"^^xsd:boolean ;
+  dtype:value "backup"^^xsd:string ;
+  rdfs:label "System Role - Backup"^^xsd:string ;
+.
+sysmo:SRQ_MAIN-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  dtype:value "main"^^xsd:string ;
+  rdfs:label "System Role - Main"^^xsd:string ;
+.
+sysmo:SRQ_PRIMARY-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  sysmo:CxSID_fragment "Prmry"^^xsd:string ;
+  sysmo:commonName "Primary"^^xsd:string ;
+  sysmo:reservedSID "true"^^xsd:boolean ;
+  dtype:value "primary"^^xsd:string ;
+  rdfs:label "System Role - Primary"^^xsd:string ;
+.
+sysmo:SRQ_SECONDARY-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  sysmo:CxSID_fragment "Sndry"^^xsd:string ;
+  sysmo:commonName "Secondary"^^xsd:string ;
+  sysmo:reservedSID "true"^^xsd:boolean ;
+  dtype:value "secondary"^^xsd:string ;
+  rdfs:label "System Role - Secondary"^^xsd:string ;
+.
+sysmo:SRQ_STANDBY-ROLE
+  rdf:type sysmo:SystemRoleQualifier ;
+  sysmo:CxSID_fragment "Stdby"^^xsd:string ;
+  sysmo:commonName "Standby"^^xsd:string ;
+  sysmo:reservedSID "true"^^xsd:boolean ;
+  dtype:value "standby"^^xsd:string ;
+  rdfs:label "System Role - Standby"^^xsd:string ;
+.
+sysmo:ST_ABORT-SYSTEM
+  rdf:type sysmo:SystemType ;
+  rdfs:label "Abort System Type"^^xsd:string ;
+.
+sysmo:ST_GROUND-SYSTEM
+  rdf:type sysmo:SystemType ;
+  rdfs:label "Ground Operations System Type"^^xsd:string ;
+.
+sysmo:ST_MISSION-OPERATIONS
+  rdf:type sysmo:SystemType ;
+  rdfs:label "Mission Operations System Type"^^xsd:string ;
+.
+sysmo:ST_RANGE-OPERATIONS
+  rdf:type sysmo:SystemType ;
+  rdfs:label "Range Operations System Type"^^xsd:string ;
+.
+sysmo:ST_VEHICLE-SYSTEM
+  rdf:type sysmo:SystemType ;
+  rdfs:label "Vehicle System Type"^^xsd:string ;
+.
+sysmo:Sensor
+  rdf:type owl:Class ;
+  dc:description "A sensor is a device that measures either system parameters, environment parameters or scientific data for an instrument."^^xsd:string ;
+  rdfs:label "Sensor"^^xsd:string ;
+  rdfs:subClassOf sysmo:Device ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Calibrator ;
+      owl:onProperty sysmo:calibrator ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <http://www.sysmo.org/ontologies/assembly.owl#MountingTechnique> ;
+      owl:onProperty <http://www.sysmo.org/ontologies/assembly.owl#mountingTechnique> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <http://www.sysmo.org/ontologies/assembly.owl#ReferenceableLocation> ;
+      owl:onProperty <http://www.sysmo.org/ontologies/spatial.owl#within> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom <http://www.sysmo.org/ontologies/device.owl#SensorType> ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#sensorType> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/assembly.owl#mountingTechnique> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#sharedSensor> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#tolerancePressureMax> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#tolerancePressureMin> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#toleranceTemperatureMax> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#toleranceTemperatureMin> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#toleranceVibrationMax> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:calibrationType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:calibrator ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#io_device> ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty <http://www.sysmo.org/ontologies/sysmo.owl#sensorType> ;
+    ] ;
+.
+sysmo:SevereEmergencyAlarm
+  rdf:type owl:Class ;
+  dc:description "A life threatening condition that is not responding to corrective actions."^^xsd:string ;
+  rdfs:label "Severe Emergency alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:EmergencyAlarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "7"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+.
+sysmo:Signal
+  rdf:type owl:Class ;
+  rdfs:label "Signal"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:SoftwareSystem
+  rdf:type owl:Class ;
+  dc:description "A kind of \"System\"."^^xsd:string ;
+  rdfs:label "Software System"^^xsd:string ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:SpaceSystem
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:System ;
+.
+sysmo:SpaceVehicleSystem
+  rdf:type owl:Class ;
+  rdfs:label "Space vehicle system"^^xsd:string ;
+  rdfs:subClassOf sysmo:SpaceSystem ;
+.
+sysmo:SpecificationParameter
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Parameter\"."^^xsd:string ;
+  rdfs:label "Specification Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:Parameter ;
+.
+sysmo:StructuralFeature
+  rdf:type owl:Class ;
+  dc:description "A block that is concerned with the structure and form of a system."^^xsd:string ;
+  rdfs:label "Structural Feature"^^xsd:string ;
+  rdfs:subClassOf sysml:Block ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:isFeatureOf ;
+    ] ;
+.
+sysmo:SubSystem
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:System ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:subsystemID ;
+    ] ;
+.
+sysmo:SubSystemFunction
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Function\"."^^xsd:string ;
+  rdfs:label "Sub System Function"^^xsd:string ;
+  rdfs:subClassOf sysmo:Function ;
+.
+sysmo:System
+  rdf:type owl:Class ;
+  dc:description "A system is defined as a viable entity that has structure, behavior, functionality and interaction with other systems so as to provide capabilities that satisfy some objective criteria in the presence of constraints.  This model of system, called an SBFI model, is used to characterize all constellation systems irrespective ranging in scope from ground support equipment, vehicles, their systems and subsystems, to components and devices."^^xsd:string ;
+  rdfs:label "System"^^xsd:string ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysml:Block ;
+      owl:onProperty sysmo:includes ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Assembly ;
+      owl:onProperty sysmo:hasAssembly ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:BehaviorFeature ;
+      owl:onProperty sysmo:hasBehaviorFeature ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Capability ;
+      owl:onProperty sysmo:hasCapability ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Command ;
+      owl:onProperty sysmo:hasCommand ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Component ;
+      owl:onProperty sysmo:hasComponent ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Condition ;
+      owl:onProperty sysmo:hasCondition ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Condition ;
+      owl:onProperty sysmo:hasCurrentCondition ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:ConstraintsSet ;
+      owl:onProperty sysmo:hasConstraintSet ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Device ;
+      owl:onProperty sysmo:hasDevice ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Function ;
+      owl:onProperty sysmo:hasFunction ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FunctionFeature ;
+      owl:onProperty sysmo:hasFunctionalFeature ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:FunctionType ;
+      owl:onProperty sysmo:hasFunctionType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Intent ;
+      owl:onProperty sysmo:hasIntent ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mode ;
+      owl:onProperty sysmo:hasCurrentMode ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mode ;
+      owl:onProperty sysmo:hasMode ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Mode ;
+      owl:onProperty sysmo:hasMode ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Module ;
+      owl:onProperty sysmo:hasModule ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:NonFunctionalRequirement ;
+      owl:onProperty sysmo:hasNonFunctionalRequirement ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Operation ;
+      owl:onProperty sysmo:hasOperation ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:OperationalGoal ;
+      owl:onProperty sysmo:hasOperationalGoal ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Parameter ;
+      owl:onProperty sysmo:hasParameter ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:QuantifiedGoal ;
+      owl:onProperty sysmo:hasQuantifiedGoal ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:StructuralFeature ;
+      owl:onProperty sysmo:hasStructuralFeature ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:hasSubsystem ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:System ;
+      owl:onProperty sysmo:hasSubsystem ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:SystemType ;
+      owl:onProperty sysmo:hasSystemType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasCurrentCondition ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasCurrentMode ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasSystemType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:occurence ;
+    ] ;
+.
+sysmo:SystemGroup
+  rdf:type owl:Class ;
+  rdfs:label "System group"^^xsd:string ;
+  rdfs:subClassOf sysmo:IdentifiableConcept ;
+.
+sysmo:SystemModeEnumeration
+  rdf:type sysmo:TaggedEnumerationType ;
+  sysmo:element sysmo:MODE_ANOMALY ;
+  sysmo:element sysmo:MODE_COLD-START ;
+  sysmo:element sysmo:MODE_DEGRADED ;
+  sysmo:element sysmo:MODE_FAILED ;
+  sysmo:element sysmo:MODE_HOT-START ;
+  sysmo:element sysmo:MODE_NORMAL ;
+  sysmo:element sysmo:MODE_RECON ;
+  sysmo:element sysmo:MODE_RECOVERY ;
+  sysmo:element sysmo:MODE_SAFED ;
+  sysmo:element sysmo:MODE_SHUTDOWN ;
+  sysmo:element sysmo:MODE_STANDBY ;
+  sysmo:element sysmo:MODE_TEST ;
+  sysmo:element sysmo:MODE_WARM-START ;
+  rdfs:label "System mode enumeration"^^xsd:string ;
+.
+sysmo:SystemRoleQualifier
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Thing\" with the following instance(s): \"Auxiliary\", \"Main\", \"Primary\", \"Secondary\", \"Standby\"."^^xsd:string ;
+  rdfs:label "System Role Qualifier"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:SystemType
+  rdf:type owl:Class ;
+  dc:description "A classification of systems based on function, such as Mission Operations, Ground Operations, etc. as well as general systems categories such as IT, vehicles, devices, etc. A separate hierarchy of functions is defined for further classification of systems."^^xsd:string ;
+  rdfs:label "System Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:TelecommandedParameter
+  rdf:type owl:Class ;
+  rdfs:label "Telecommanded Parameter"^^xsd:string ;
+  rdfs:subClassOf sysmo:ControlledParameter ;
+.
+sysmo:TelemeteredProperty
+  rdf:type owl:Class ;
+  dc:description "A parameter of some system, component or device that is monitored over telemetry."^^xsd:string ;
+  rdfs:label "Telemetered Property"^^xsd:string ;
+  rdfs:subClassOf sysmo:MeasuredParameter ;
+.
+sysmo:Thing
+  rdf:type owl:Class ;
+  rdfs:label "Thing"^^xsd:string ;
+  rdfs:subClassOf owl:Thing ;
+.
+sysmo:UnIntendedBehavior
+  rdf:type owl:Class ;
+  dc:description "A kind of \"Behavior Feature\"."^^xsd:string ;
+  rdfs:label "Un Intended Behavior"^^xsd:string ;
+  rdfs:subClassOf sysmo:BehaviorFeature ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "false"^^xsd:boolean ;
+      owl:onProperty sysmo:intentional ;
+    ] ;
+  owl:disjointWith sysmo:IntendedBehavior ;
+.
+sysmo:Unit
+  rdf:type owl:Class ;
+  rdfs:label "Unit"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:VK_PRIVATE
+  rdf:type sysmo:VisibilityKind ;
+  rdfs:label "Private"^^xsd:string ;
+.
+sysmo:VK_PROTECTED
+  rdf:type sysmo:VisibilityKind ;
+  rdfs:label "Protected"^^xsd:string ;
+.
+sysmo:VK_PUBLIC
+  rdf:type sysmo:VisibilityKind ;
+  rdfs:label "Public"^^xsd:string ;
+.
+sysmo:Variable
+  rdf:type owl:Class ;
+  rdfs:label "Variable"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+.
+sysmo:Vehicle
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:VehicleCompartment ;
+      owl:onProperty sysmo:hasPart ;
+    ] ;
+.
+sysmo:VehicleCompartment
+  rdf:type owl:Class ;
+  rdfs:subClassOf sysmo:Element ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:Vehicle ;
+    ] ;
+.
+sysmo:VehicleType
+  rdf:type owl:Class ;
+  rdfs:label "Vehicle Type"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:View
+  rdf:type owl:Class ;
+  dc:description "A view is a representation of a system or subsystem from the perspective of a single viewpoint." ;
+  rdfs:label "View"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      dc:description """the conform relationship is a dependency between the view and a viewpoint. The view conforms to the specified rules and
+conventions detailed in the viewpoint.""" ;
+      owl:allValuesFrom sysmo:ViewPoint ;
+      owl:onProperty sysmo:conformsTo ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onProperty sysmo:conformsTo ;
+    ] ;
+.
+sysmo:ViewPoint
+  rdf:type owl:Class ;
+  dc:description "A viewpoint is a specification of the conventions and rules for constructing and using a view for the purpose of addressing a set of stakeholder concerns. The languages and methods for specifying a view may reference methods and languages in another viewpoint. They specify the elements expected to be represented in the view, and may be formally or informally defined. For example, the security viewpoint may require the security requirements, security functional and physical architecture, and security test cases." ;
+  rdfs:label "View Point"^^xsd:string ;
+  rdfs:subClassOf sysmo:Thing ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:description ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:purpose ;
+    ] ;
+.
+sysmo:VisibilityKind
+  rdf:type owl:Class ;
+  rdfs:label "Visibility kind"^^xsd:string ;
+  rdfs:subClassOf sysmo:EnumeratedValue ;
+.
+sysmo:VisibilityKindEnumeration
+  rdf:type sysmo:TaggedEnumerationType ;
+  dc:description "VisibilityKind is an enumeration of the following literal values: 'public', 'private' and 'protected'."^^xsd:string ;
+  rdfs:label "Visibility kind enumeration"^^xsd:string ;
+.
+sysmo:VisualCueEnumeration
+  rdf:type owl:Class ;
+  rdfs:label "Visual cue enumeration"^^xsd:string ;
+  rdfs:subClassOf sysmo:ModalCueEnumeration ;
+.
+sysmo:WarningAlarm
+  rdf:type owl:Class ;
+  dc:description "Conditions that require immediate correction to avoid loss of major impact to mission or potential loss of crew. Included are faults, failures, and out of tolerance conditions for functions critical to Constellation System survival and crew survival."^^xsd:string ;
+  rdfs:label "Warning alarm"^^xsd:string ;
+  rdfs:subClassOf sysmo:Alarm ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue sysmo:AT_CAUTION ;
+      owl:onProperty sysmo:hasAlarmType ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:hasValue "3"^^xsd:int ;
+      owl:onProperty dtype:code ;
+    ] ;
+  owl:equivalentClass [
+      rdf:type owl:Class ;
+      owl:intersectionOf (
+          sysmo:Alarm
+          [
+            rdf:type owl:Restriction ;
+            owl:hasValue sysmo:AT_CAUTION ;
+            owl:onProperty sysmo:hasAlarmType ;
+          ]
+        ) ;
+    ] ;
+.
+sysmo:WarningAlarmHighLimit
+  rdf:type owl:Class ;
+  dc:description "Conditions that require immediate correction to avoid loss of major impact to mission or potential loss of crew. Included are faults, failures, and out of tolerance conditions for functions critical to Constellation System survival and crew survival."^^xsd:string ;
+  rdfs:label "Warning alarm high limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:CautionaryAlarmHighLimit ;
+  owl:disjointWith sysmo:WarningAlarmLowLimit ;
+.
+sysmo:WarningAlarmLimitsPair
+  rdf:type owl:Class ;
+  rdfs:label "Warning alarm limits pair"^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsPair ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasWarningAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:cardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:hasWarningAlarmLowLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:maxCardinality "1"^^xsd:int ;
+      owl:onProperty sysmo:warningDwellTime ;
+    ] ;
+.
+sysmo:WarningAlarmLimitsSpecification
+  rdf:type owl:Class ;
+  dc:description "High and Low Limits for an Advisory Alarm."^^xsd:string ;
+  rdfs:label "Warning Alarm Limits Specification."^^xsd:string ;
+  rdfs:subClassOf sysmo:AlarmLimitsSpecification ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:WarningAlarmHighLimit ;
+      owl:onProperty sysmo:hasAlarmHighLimit ;
+    ] ;
+  rdfs:subClassOf [
+      rdf:type owl:Restriction ;
+      owl:allValuesFrom sysmo:WarningAlarmLowLimit ;
+      owl:onProperty sysmo:hasAlarmLowLimit ;
+    ] ;
+.
+sysmo:WarningAlarmLowLimit
+  rdf:type owl:Class ;
+  dc:description "Conditions that require immediate correction to avoid loss of major impact to mission or potential loss of crew. Included are faults, failures, and out of tolerance conditions for functions critical to Constellation System survival and crew survival."^^xsd:string ;
+  rdfs:label "Warning alarm low limit"^^xsd:string ;
+  rdfs:subClassOf sysmo:CautionAlarmLowLimit ;
+.
+sysmo:advisoryDwellTime
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The time (in seconds expressed as double precision floating point) that the condition needs to persist before an advisory alarm is generated." ;
+  rdfs:label "advisory dwell time"^^xsd:string ;
+  rdfs:range xsd:double ;
+  rdfs:subPropertyOf sysmo:dwellTime ;
+.
+sysmo:assumption
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "assumption"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:assures
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "assures"^^xsd:string ;
+.
+sysmo:basis
+  rdf:type owl:AnnotationProperty ;
+  dc:description "The 'basis' annotation is used to hold traceability for model transformations."^^xsd:string ;
+  rdfs:label "basis"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:belongsTo
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "belongs to"^^xsd:string ;
+.
+sysmo:busID
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "bus ID"^^xsd:string ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:canFailWith
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "can fail with"^^xsd:string ;
+  owl:inverseOf sysmo:hasEffect ;
+.
+sysmo:causes
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "causes"^^xsd:string ;
+  owl:inverseOf sysmo:isCausedBy ;
+.
+sysmo:cautionDwellTime
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The time (in seconds expressed as double precision floating point) that the condition needs to persist before a caution alarm is generated." ;
+  rdfs:label "caution dwell time"^^xsd:string ;
+  rdfs:range xsd:double ;
+  rdfs:subPropertyOf sysmo:dwellTime ;
+.
+sysmo:changeAlarm
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:code
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:comment "Code is a machine processable tag used in software systems such as telemetry and telecommand"^^xsd:string ;
+  rdfs:label "code"^^xsd:string ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+sysmo:comment
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "comments"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:componentID
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:conformsTo
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "conforms to"^^xsd:string ;
+.
+sysmo:conjugated
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "conjugated"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:contains
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "contains"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:controllableParameter
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "controllable parameter"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:controls
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "controls"^^xsd:string ;
+  owl:inverseOf sysmo:isControlledBy ;
+.
+sysmo:count
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "count"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+sysmo:cui
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:defaultValue
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:anySimpleType ;
+.
+sysmo:deviceID
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:dwellTime
+  rdf:type owl:DatatypeProperty ;
+  dc:description "An abstract property for the time (in seconds expressed as double precision floating point) that the condition needs to persist before a caution alarm is generated. During this period, the dynamic process remains halted so that another process may occur." ;
+  dtype:abstract "true"^^xsd:boolean ;
+  rdfs:label "dwell time"^^xsd:string ;
+  rdfs:range xsd:double ;
+.
+sysmo:effectivity
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "Effectivity"^^xsd:string ;
+.
+sysmo:emergencyDwellTime
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The time (in seconds expressed as double precision floating point) that the condition needs to persist before an emergency alarm is generated." ;
+  rdfs:label "emergency dwell time"^^xsd:string ;
+  rdfs:range xsd:double ;
+  rdfs:subPropertyOf sysmo:dwellTime ;
+.
+sysmo:encodedValueLimits
+  rdf:type owl:DatatypeProperty ;
+  dc:description "Indicates whether the Low Limit and High Limit values are defined with respect to the encoded value or the engineering unit value. For calibrated parameters, this attribute is needed to determine whether the comparison is to be made before or after calibration. For non-calibrated parameters, there is no distinction and the field is not applicable. Must be one of the following: True â€“ limit values are with respect to the encoded value, if applicable; False â€“ limit values are with respect to the engineering unit value. If not specified, the value is assumed to be False." ;
+  rdfs:label "encoded value limits"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:exclusiveLimit
+  rdf:type sysmo:LimitType ;
+  dtype:code 1 ;
+  dtype:value "exclusive"^^xsd:string ;
+  rdfs:label "exclusive limit"^^xsd:string ;
+.
+sysmo:generates
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "generates"^^xsd:string ;
+.
+sysmo:hasAdvisoryAlarmHighLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "advisory alarm high limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmHighLimit ;
+  rdfs:subPropertyOf sysmo:hasAlarmHighLimit ;
+.
+sysmo:hasAdvisoryAlarmLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "advisory alarm limits"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLimitsPair ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimitsPair ;
+.
+sysmo:hasAdvisoryAlarmLowLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "advisory alarm low limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLowLimit ;
+  rdfs:subPropertyOf sysmo:hasAlarmLowLimit ;
+.
+sysmo:hasAdvisoryMonitor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "advisory monitor"^^xsd:string ;
+  rdfs:range sysmo:AdvisoryAlarmLimitsSpecification ;
+.
+sysmo:hasAlarmHighLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "alarm high limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLimit ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimit ;
+.
+sysmo:hasAlarmLimit
+  rdf:type owl:ObjectProperty ;
+  dc:description "A reference to one or more alarm limits for 'advisory', 'caution', 'emergency' and 'warning' alarms." ;
+  rdfs:label "alarm limit"^^xsd:string ;
+.
+sysmo:hasAlarmLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "alarm limits"^^xsd:string ;
+.
+sysmo:hasAlarmLimitsPair
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "alarm limits pair"^^xsd:string ;
+.
+sysmo:hasAlarmLimitsSpecification
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "alarm limits specification"^^xsd:string ;
+.
+sysmo:hasAlarmLowLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "alarm low limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLimit ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimit ;
+.
+sysmo:hasAlarmType
+  rdf:type owl:ObjectProperty ;
+.
+sysmo:hasAssembly
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has assembly"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasBehaviorFeature
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "behavior feature"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFeature ;
+  owl:inverseOf sysmo:behaviorFeatureOf ;
+.
+sysmo:hasBidirectionalFlow
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "bidirectional flow"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:flowItem ;
+  rdfs:subPropertyOf sysmo:hasFlowItem ;
+.
+sysmo:hasCapability
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "capability"^^xsd:string ;
+  owl:inverseOf sysmo:capabilityOf ;
+.
+sysmo:hasCategory
+  rdf:type owl:ObjectProperty ;
+  dc:description "Used for categorizing anything."^^xsd:string ;
+  rdfs:label "category"^^xsd:string ;
+  owl:inverseOf sysmo:isCategoryFor ;
+.
+sysmo:hasCauseType
+  rdf:type owl:FunctionalProperty ;
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "cause type"^^xsd:string ;
+  rdfs:range sysmo:CauseType ;
+.
+sysmo:hasCautionAlarmHighLimit
+  rdf:type owl:ObjectProperty ;
+  dc:description "If the parameter's value is greater than or equal to the Caution High Limit and less that the Warning High Limit, then a Caution Alarm violation occurs. If the parameterâ€™s value is greater than or equal to the Warning High Limit, then a Warning Alarm Violation occurs." ;
+  rdfs:label "caution alarm high limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:advisoryAlarmHighLimit ;
+  rdfs:subPropertyOf sysmo:hasAdvisoryAlarmHighLimit ;
+.
+sysmo:hasCautionAlarmLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "caution alarm limits"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLimitsPair ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimitsPair ;
+.
+sysmo:hasCautionAlarmLowLimit
+  rdf:type owl:ObjectProperty ;
+  dc:description "If a parameter's value is less than or equal to the Caution Low Limit and greater than the Warning Low Limit, then a Caution Alarm Violation occurs. If the parameterâ€™s value is less than or equal to the Warning Low Limit, then a Warning Alarm violation occurs." ;
+  rdfs:label "caution alarm low limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:advisoryAlarmLowLimit ;
+  rdfs:subPropertyOf sysmo:hasAdvisoryAlarmLowLimit ;
+.
+sysmo:hasCautionMonitor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "caution monitor"^^xsd:string ;
+  rdfs:range sysmo:CautionAlarmLimitsSpecification ;
+.
+sysmo:hasCommand
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "command"^^xsd:string ;
+.
+sysmo:hasComponent
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "component"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+  owl:inverseOf sysmo:componentOf ;
+.
+sysmo:hasComprises
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "comprises"^^xsd:string ;
+.
+sysmo:hasCondition
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "condition"^^xsd:string ;
+.
+sysmo:hasConfidentiality
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:ObjectProperty ;
+  dc:description "A flag for asserting that there are access rights associated with some entity"^^xsd:string ;
+  rdfs:label "confidentiality"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:hasConnector
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "connector"^^xsd:string ;
+.
+sysmo:hasConstrainedArtifact
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "constrained artifact"^^xsd:string ;
+  owl:inverseOf sysmo:constrainedArtifactOf ;
+.
+sysmo:hasConstraint
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "constraint"^^xsd:string ;
+  owl:inverseOf sysmo:constrainedBy ;
+  owl:inverseOf sysmo:isConstrainedBy ;
+.
+sysmo:hasConstraintSet
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "constraint set"^^xsd:string ;
+.
+sysmo:hasCriticality
+  rdf:type owl:ObjectProperty ;
+  dc:description "Indicates the criticality of the command as assigned by the data provider."^^xsd:string ;
+  rdfs:label "Criticality"^^xsd:string ;
+  rdfs:label "criticality"^^xsd:string ;
+.
+sysmo:hasCurrentCondition
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "current condition"^^xsd:string ;
+.
+sysmo:hasCurrentMode
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "current mode"^^xsd:string ;
+.
+sysmo:hasDevice
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "device"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasDirection
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "direction"^^xsd:string ;
+.
+sysmo:hasDiscipline
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "Discipline"^^xsd:string ;
+.
+sysmo:hasEffect
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "effect"^^xsd:string ;
+.
+sysmo:hasEffectType
+  rdf:type owl:FunctionalProperty ;
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "effect type"^^xsd:string ;
+  rdfs:range sysmo:EffectType ;
+.
+sysmo:hasElement
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "element"^^xsd:string ;
+.
+sysmo:hasEmergencyAlarmHighLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "emergency alarm high limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasWarningAlarmHighLimit ;
+.
+sysmo:hasEmergencyAlarmLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "emergency alarm limits"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimitsPair ;
+.
+sysmo:hasEmergencyAlarmLowLimit
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "emergency alarm low limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasWarningAlarmLowLimit ;
+.
+sysmo:hasEmergencyMonitor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "emergency monitor"^^xsd:string ;
+  rdfs:range sysmo:EmergencyAlarmLimitsSpecification ;
+.
+sysmo:hasExportedData
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "exported data"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFlowItem ;
+.
+sysmo:hasExpression
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "expression"^^xsd:string ;
+.
+sysmo:hasFailureCriticality
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "failure criticality"^^xsd:string ;
+.
+sysmo:hasFailureEffect
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has failure effect"^^xsd:string ;
+  owl:inverseOf sysmo:canFailWith ;
+.
+sysmo:hasFeature
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has feature"^^xsd:string ;
+.
+sysmo:hasFlowItem
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "flow item"^^xsd:string ;
+.
+sysmo:hasFlowPort
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "flow port"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPort ;
+.
+sysmo:hasFlowProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "flow property"^^xsd:string ;
+.
+sysmo:hasFlowSpecification
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "flow specification"^^xsd:string ;
+.
+sysmo:hasForm
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "form"^^xsd:string ;
+.
+sysmo:hasFunction
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "function"^^xsd:string ;
+.
+sysmo:hasFunctionType
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "function type"^^xsd:string ;
+.
+sysmo:hasFunctionalFeature
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "function feature"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFeature ;
+  owl:inverseOf sysmo:functionalFeatureOf ;
+.
+sysmo:hasGroundingDiscipline
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "grounding discipline"^^xsd:string ;
+.
+sysmo:hasImportedData
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "imported data type"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFlowItem ;
+.
+sysmo:hasInboundFlow
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "inbound flow"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFlowItem ;
+.
+sysmo:hasInput
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has input"^^xsd:string ;
+  owl:inverseOf sysmo:isInputFor ;
+.
+sysmo:hasIntent
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "intent"^^xsd:string ;
+  rdfs:range sysmo:Intent ;
+.
+sysmo:hasInteractionPort
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "interaction port"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPort ;
+.
+sysmo:hasInterface
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "interface"^^xsd:string ;
+.
+sysmo:hasInterfaceQualifier
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "interface qualifier"^^xsd:string ;
+.
+sysmo:hasLikelihood
+  rdf:type owl:FunctionalProperty ;
+  rdf:type owl:ObjectProperty ;
+  rdfs:domain sysmo:PotentialFailure ;
+  rdfs:label "likelihood"^^xsd:string ;
+.
+sysmo:hasLocation
+  rdf:type owl:ObjectProperty ;
+  dc:description "A reference to a Location Descriptor" ;
+  rdfs:label "location"^^xsd:string ;
+.
+sysmo:hasMeasure
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has measure"^^xsd:string ;
+  owl:inverseOf sysmo:isMeasuredBy ;
+.
+sysmo:hasMeasuredMedia
+  rdf:type owl:ObjectProperty ;
+  dc:description "The media being measured."^^xsd:string ;
+  rdfs:label " Measured Media"^^xsd:string ;
+.
+sysmo:hasMechanism
+  rdf:type owl:ObjectProperty ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasModalCue
+  rdf:type owl:ObjectProperty ;
+.
+sysmo:hasModalCuesSpecification
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "modal cues specification"^^xsd:string ;
+.
+sysmo:hasMode
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has mode"^^xsd:string ;
+.
+sysmo:hasModule
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "module"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasNonFunctionalRequirement
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has non-functional requirement"^^xsd:string ;
+.
+sysmo:hasORU
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "ORU"^^xsd:string ;
+.
+sysmo:hasOperation
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "operation"^^xsd:string ;
+  owl:inverseOf sysmo:operationOf ;
+.
+sysmo:hasOperationalGoal
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "operational goal"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:goal ;
+.
+sysmo:hasOutboundFlow
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "outbound flow"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFlowItem ;
+.
+sysmo:hasOutput
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "output"^^xsd:string ;
+  owl:inverseOf sysmo:isOutputFor ;
+.
+sysmo:hasParameter
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has parameter"^^xsd:string ;
+  owl:inverseOf sysmo:isParameterOf ;
+.
+sysmo:hasParameterLimitType
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "parameter limit type"^^xsd:string ;
+.
+sysmo:hasParameterLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "parameter limits"^^xsd:string ;
+.
+sysmo:hasParameterLimitsFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "parameter limits for"^^xsd:string ;
+  owl:inverseOf sysmo:hasParameterLimits ;
+.
+sysmo:hasPart
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "has part"^^xsd:string ;
+  owl:inverseOf sysmo:isPartOf ;
+.
+sysmo:hasPartProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "part property"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasProperty ;
+.
+sysmo:hasPort
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "port"^^xsd:string ;
+  owl:inverseOf sysmo:isPortOf ;
+.
+sysmo:hasPossibleConsequence
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "possible consequence"^^xsd:string ;
+.
+sysmo:hasProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "property"^^xsd:string ;
+.
+sysmo:hasPropertyType
+  rdf:type owl:ObjectProperty ;
+  dc:description "a reference to a property type such as temperature or pressure" ;
+  rdfs:label "property type"^^xsd:string ;
+.
+sysmo:hasQuantifiedGoal
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "quantified goal"^^xsd:string ;
+.
+sysmo:hasReferenceArtifact
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "reference artifact"^^xsd:string ;
+.
+sysmo:hasReferenceProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "reference property"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasProperty ;
+.
+sysmo:hasRemedy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "remedy"^^xsd:string ;
+  owl:inverseOf sysmo:isRemedyFor ;
+.
+sysmo:hasSink
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "sink"^^xsd:string ;
+  owl:inverseOf sysmo:isSinkFor ;
+.
+sysmo:hasSource
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "source"^^xsd:string ;
+  owl:inverseOf sysmo:isSourceFor ;
+.
+sysmo:hasSpecification
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specification"^^xsd:string ;
+  owl:inverseOf sysmo:isSpecificationFor ;
+.
+sysmo:hasStimulus
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "stimulus"^^xsd:string ;
+.
+sysmo:hasStructuralFeature
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "structural feature"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasFeature ;
+.
+sysmo:hasSubAssembly
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "subassembly"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasSubsystem
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "subsystem"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+  owl:inverseOf sysmo:isSubsystemOf ;
+.
+sysmo:hasSystemRoleQualifier
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "system role qualifier"^^xsd:string ;
+.
+sysmo:hasSystemType
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "system type"^^xsd:string ;
+.
+sysmo:hasTracedTo
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "traced to"^^xsd:string ;
+.
+sysmo:hasTypeProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "data type property"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasProperty ;
+.
+sysmo:hasUnitOfMeasure
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "unit of measure"^^xsd:string ;
+  owl:inverseOf sysmo:hasUnitOfMeasureFor ;
+  owl:inverseOf sysmo:unitOfMeasureFor ;
+.
+sysmo:hasUnitOfMeasureFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "unit of measure for"^^xsd:string ;
+  owl:inverseOf sysmo:hasUnitOfMeasure ;
+  owl:inverseOf sysmo:unitOfMeasure ;
+.
+sysmo:hasUntilFlight
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "until  flight"^^xsd:string ;
+.
+sysmo:hasVariable
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "variable"^^xsd:string ;
+  owl:inverseOf sysmo:variableOf ;
+.
+sysmo:hasVariableType
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "variable type"^^xsd:string ;
+  owl:inverseOf sysmo:variableTypeOf ;
+.
+sysmo:hasVehicle
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "vehicle"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:hasPart ;
+.
+sysmo:hasVehicleElement
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "vehicle element"^^xsd:string ;
+  owl:inverseOf sysmo:vehicleElementOf ;
+.
+sysmo:hasVerifyMethodKind
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "verify method kind"^^xsd:string ;
+.
+sysmo:hasWarningAlarmHighLimit
+  rdf:type owl:ObjectProperty ;
+  dc:description "If the parameter's value is greater than or equal to the Caution High Limit and less that the Warning High Limit, then a Caution Alarm violation occurs. If the parameterâ€™s value is greater than or equal to the Warning High Limit, then a Warning Alarm Violation occurs." ;
+  rdfs:label "warning alarm high limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:cautionAlarmHighLimit ;
+  rdfs:subPropertyOf sysmo:hasCautionAlarmHighLimit ;
+.
+sysmo:hasWarningAlarmLimits
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "warning alarm limits"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:alarmLimitsPair ;
+  rdfs:subPropertyOf sysmo:hasAlarmLimitsPair ;
+.
+sysmo:hasWarningAlarmLowLimit
+  rdf:type owl:ObjectProperty ;
+  dc:description "If a parameter's value is less than or equal to the Caution Low Limit and greater than the Warning Low Limit, then a Caution Alarm Violation occurs. If the parameterâ€™s value is less than or equal to the Warning Low Limit, then a Warning Alarm violation occurs." ;
+  rdfs:label "warning alarm low limit"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:cautionAlarmLowLimit ;
+  rdfs:subPropertyOf sysmo:hasCautionAlarmLowLimit ;
+.
+sysmo:hasWarningMonitor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "warning monitor"^^xsd:string ;
+  rdfs:range sysmo:WarningAlarmLimitsSpecification ;
+.
+sysmo:id
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "id"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:identifier
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:label "identifier"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:inCondition
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "in condition"^^xsd:string ;
+.
+sysmo:inMode
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "in mode"^^xsd:string ;
+.
+sysmo:inbound
+  rdf:type sysmo:InterfaceQualifier ;
+  rdfs:label "inbound"^^xsd:string ;
+.
+sysmo:includes
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "includes"^^xsd:string ;
+.
+sysmo:inclusiveLimit
+  rdf:type sysmo:LimitType ;
+  dtype:code 2 ;
+  dtype:value "inclusive"^^xsd:string ;
+  rdfs:label "inclusive limit"^^xsd:string ;
+.
+sysmo:indicates
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "indicates"^^xsd:string ;
+  owl:inverseOf sysmo:isIndicatedBy ;
+.
+sysmo:intentional
+  rdf:type owl:DatatypeProperty ;
+  rdf:type owl:FunctionalProperty ;
+  rdfs:label "intentional"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+sysmo:interfacesWith
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "interfaces with"^^xsd:string ;
+.
+sysmo:involvesProperty
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "involves property"^^xsd:string ;
+.
+sysmo:isAssociatedWith
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is associated with"^^xsd:string ;
+.
+sysmo:isCalibratorFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is calibrator for"^^xsd:string ;
+.
+sysmo:isCapabilityRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is capability required by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isRequiredBy ;
+  owl:inverseOf sysmo:requiresCapability ;
+.
+sysmo:isCategoryFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is category for"^^xsd:string ;
+.
+sysmo:isCausedBy
+  rdf:type owl:ObjectProperty ;
+  rdf:type owl:TransitiveProperty ;
+  rdfs:label "caused by"^^xsd:string ;
+  owl:inverseOf sysmo:causes ;
+.
+sysmo:isConstrainedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is constrained by"^^xsd:string ;
+.
+sysmo:isControlledBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is controlled by"^^xsd:string ;
+.
+sysmo:isDerivedFrom
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is derived from"^^xsd:string ;
+.
+sysmo:isFeatureOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is feature of"^^xsd:string ;
+.
+sysmo:isIncludedIn
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is included in"^^xsd:string ;
+  owl:inverseOf sysmo:includes ;
+.
+sysmo:isIndicatedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is indicated by"^^xsd:string ;
+.
+sysmo:isInputFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is input for"^^xsd:string ;
+  owl:inverseOf sysmo:hasInput ;
+.
+sysmo:isMeasuredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is measured by"^^xsd:string ;
+  owl:inverseOf sysmo:hasMeasure ;
+  owl:inverseOf sysmo:measures ;
+.
+sysmo:isMonitoredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is monitored by"^^xsd:string ;
+.
+sysmo:isOutputFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "output for"^^xsd:string ;
+  owl:inverseOf sysmo:hasOutput ;
+.
+sysmo:isParameterOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is parameter of"^^xsd:string ;
+  owl:inverseOf sysmo:hasParameter ;
+.
+sysmo:isPartOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is part of"^^xsd:string ;
+  owl:inverseOf sysmo:hasPart ;
+.
+sysmo:isPortOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is port of"^^xsd:string ;
+  owl:inverseOf sysmo:hasPort ;
+.
+sysmo:isRealizedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is realized by"^^xsd:string ;
+  owl:inverseOf sysmo:realizes ;
+.
+sysmo:isRefinedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is refined by"^^xsd:string ;
+.
+sysmo:isRemedyFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is remedy for"^^xsd:string ;
+  owl:inverseOf sysmo:hasRemedy ;
+.
+sysmo:isRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is required by"^^xsd:string ;
+.
+sysmo:isSatisfiedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is satisfied by"^^xsd:string ;
+.
+sysmo:isSinkFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is sink for"^^xsd:string ;
+  owl:inverseOf sysmo:hasSink ;
+.
+sysmo:isSourceFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is source for"^^xsd:string ;
+  owl:inverseOf sysmo:hasSource ;
+.
+sysmo:isSpecificationFor
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is specification for"^^xsd:string ;
+  owl:inverseOf sysmo:hasSpecification ;
+.
+sysmo:isSubsystemCapabilityRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "subsystem capability required by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isVehicleCapabilityRequiredBy ;
+  owl:inverseOf sysmo:requiresSubsystemCapability ;
+.
+sysmo:isSubsystemOf
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is subsystem of"^^xsd:string ;
+  owl:inverseOf sysmo:hasSubsystem ;
+.
+sysmo:isSystemFunctionRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is system function required by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isSubsystemCapabilityRequiredBy ;
+  owl:inverseOf sysmo:requiresSystemFunction ;
+.
+sysmo:isUsedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is used by"^^xsd:string ;
+.
+sysmo:isValueRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "value required by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isRequiredBy ;
+  rdfs:subPropertyOf sysmo:requiredBy ;
+  owl:inverseOf sysmo:requiresValue ;
+.
+sysmo:isVehicleCapabilityRequiredBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is vehicle capability required by"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:isCapabilityRequiredBy ;
+  owl:inverseOf sysmo:requiresVehicleCapability ;
+.
+sysmo:isVerifiedBy
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "is verified by"^^xsd:string ;
+.
+sysmo:message
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "message"^^xsd:string ;
+.
+sysmo:monitors
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "monitors"^^xsd:string ;
+  owl:inverseOf sysmo:isMonitoredBy ;
+.
+sysmo:negativeDeltaLimit
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "negative delta limit"^^xsd:string ;
+  rdfs:range dtype:numericUnion ;
+.
+sysmo:occurence
+  rdf:type owl:DatatypeProperty ;
+  dc:description "A number between 0 and 999 that is used to uniquely identify a  measurement or command associated with a specific component."^^xsd:string ;
+  rdfs:label "Occurence"^^xsd:string ;
+  rdfs:range xsd:int ;
+.
+sysmo:outbound
+  rdf:type sysmo:InterfaceQualifier ;
+  rdfs:label "outbound"^^xsd:string ;
+.
+sysmo:owns
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "owns"^^xsd:string ;
+.
+sysmo:ownsPort
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "owns port"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:owns ;
+.
+sysmo:parameterHighLimit
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The high limit value for a parameter.  The Limit Type specifies whether High Limit is considered to be the highest allowed or disallowed value. The value may be calibrated or uncalibrated (see Calibrated Limits attribute). The encoded form of the provided value must be consistent with the Data Type and Parameter Length specified for the parameter, as defined in this table. Value is undefined for predefined parameters and optional for modifiable parameters. If provided the value must be greater than the Low Limit." ;
+  rdfs:label "parameter high limit"^^xsd:string ;
+  rdfs:range sysmo:numeric ;
+  rdfs:subPropertyOf sysmo:parameterLimit ;
+.
+sysmo:parameterLimit
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "parameter limit"^^xsd:string ;
+  rdfs:range sysmo:numeric ;
+.
+sysmo:parameterLowLimit
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The low limit value for a parameter.  The Limit Type specifies whether Low Limit is considered to be the lowest allowed or disallowed value. The value may be calibrated or uncalibrated (see Calibrated Limits attribute). The encoded form of the provided value must be consistent with the Data Type and Parameter Length specified for the parameter, as defined in this table. Value is undefined for predefined parameters and optional for modifiable parameters. If provided the value must be less than the High Limit." ;
+  rdfs:label "parameter low limit"^^xsd:string ;
+  rdfs:range sysmo:numeric ;
+  rdfs:subPropertyOf sysmo:parameterLimit ;
+.
+sysmo:partNumber
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "part number"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:positiveDeltaLimit
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "positive delta limit"^^xsd:string ;
+  rdfs:range dtype:numericUnion ;
+.
+sysmo:provides
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "provides"^^xsd:string ;
+.
+sysmo:providesFunction
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "provides function"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:provides ;
+.
+sysmo:providesService
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "provides service"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:provides ;
+.
+sysmo:realizes
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "realizes"^^xsd:string ;
+  owl:inverseOf sysmo:isRealizedBy ;
+.
+sysmo:releaseCode
+  rdf:type owl:DatatypeProperty ;
+  dc:description "A 'releaseCode' is a string constructed accroding to the CxDA release encoding rules." ;
+  rdfs:label "release"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:requires
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires"^^xsd:string ;
+.
+sysmo:requiresCapability
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires capability"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:requires ;
+  owl:inverseOf sysmo:capabilityRequiredBy ;
+  owl:inverseOf sysmo:isCapabilityRequiredBy ;
+.
+sysmo:requiresSubsystemCapability
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires subsystem capability"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:requiresVehicleCapability ;
+  owl:inverseOf sysmo:isSubsystemCapabilityRequiredBy ;
+.
+sysmo:requiresSystemFunction
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires system function"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:requiresSubsystemCapability ;
+  owl:inverseOf sysmo:isSystemFunctionRequiredBy ;
+.
+sysmo:requiresValue
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires value"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:requires ;
+  owl:inverseOf sysmo:isValueRequiredBy ;
+.
+sysmo:requiresVehicleCapability
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "requires vehicle capability"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:requiresCapability ;
+  owl:inverseOf sysmo:isVehicleCapabilityRequiredBy ;
+.
+sysmo:revision
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "revision"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:serialNumber
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "serial number"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:sid
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:specifies
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specifies"^^xsd:string ;
+.
+sysmo:specifiesProvidedOperation
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specifies provided operation"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:specifies ;
+.
+sysmo:specifiesProvidedSignal
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specifies provided signal"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:specifies ;
+.
+sysmo:specifiesRequiredOperation
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specifies required operation"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:specifies ;
+.
+sysmo:specifiesRequiredSignal
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "specifies required signal"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:specifies ;
+.
+sysmo:subsystemID
+  rdf:type owl:DatatypeProperty ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:systemID
+  rdf:type owl:DatatypeProperty ;
+  rdfs:range xsd:string ;
+  rdfs:subPropertyOf sysmo:identifier ;
+.
+sysmo:triggerCount
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The number of consecutive samples that the alarm condition needs to persist before an alarm is generated."^^xsd:string ;
+  rdfs:label "trigger count"^^xsd:string ;
+  rdfs:range xsd:nonNegativeInteger ;
+.
+sysmo:uses
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "uses"^^xsd:string ;
+.
+sysmo:usesSystem
+  rdf:type owl:ObjectProperty ;
+  rdfs:label "uses system"^^xsd:string ;
+  rdfs:subPropertyOf sysmo:uses ;
+  owl:inverseOf sysmo:IsSystemUsedBy ;
+.
+sysmo:version
+  rdf:type owl:DatatypeProperty ;
+  dc:description "A version string constructed according to version encoding rules." ;
+  rdfs:label "version"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+sysmo:warningDwellTime
+  rdf:type owl:DatatypeProperty ;
+  dc:description "The time (in seconds expressed as double precision floating point) that the condition needs to persist before a warning alarm is generated." ;
+  rdfs:label "warning dwell time"^^xsd:string ;
+  rdfs:range xsd:double ;
+  rdfs:subPropertyOf sysmo:dwellTime ;
+.
+prov:wasInfluencedBy
+  rdf:type rdf:Property ;
+.
